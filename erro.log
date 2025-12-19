@@ -1,0 +1,30 @@
+[19-Dec-2025 16:00:32 Europe/Berlin] POST RECEBIDO: Array
+(
+    [nome_usuario] => Paulo
+    [email_usuario] => paulodeoliveirasantos68@gmail.com
+    [senha_usuario] => 1
+    [perfil_usuario] => 0
+)
+
+[19-Dec-2025 16:00:32 Europe/Berlin] SQL: INSERT INTO usuarios (nome, email, senha, perfil)
+                VALUES (:nome, :email, :senha, :perfil)
+[19-Dec-2025 16:00:41 Europe/Berlin] POST RECEBIDO: Array
+(
+    [nome_usuario] => Paulo
+    [email_usuario] => paulodeoliveirasantos68@gmail.com
+    [senha_usuario] => 1
+    [perfil_usuario] => 0
+)
+
+[19-Dec-2025 16:00:41 Europe/Berlin] SQL: INSERT INTO usuarios (nome, email, senha, perfil)
+                VALUES (:nome, :email, :senha, :perfil)
+[19-Dec-2025 17:15:03 Europe/Berlin] POST RECEBIDO: Array
+(
+    [nome_usuario] => Paulo
+    [email_usuario] => paulodeoliveirasantos68@gmail.com
+    [senha_usuario] => 1
+    [perfil_usuario] => 0
+)
+
+[19-Dec-2025 17:15:03 Europe/Berlin] SQL: INSERT INTO usuarios (nome, email, senha, perfil)
+                VALUES (:nome, :email, :senha, :perfil)
