@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../config/conexao.php';
+require_once '../Projeto_Ponto/config/conexao.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 

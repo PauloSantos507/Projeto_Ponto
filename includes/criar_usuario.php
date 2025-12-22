@@ -4,7 +4,7 @@ ini_set('log_errors', 1);
 ini_set('error_log', __DIR__ . '/erro.log');
 error_reporting(E_ALL);
 
-require_once __DIR__ . "../config/conexao.php";
+require_once __DIR__ . '../Projeto_Ponto/config/conexao.php/';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
