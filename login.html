@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <h2>"Realize o seu Login"</h2>
+
+    <form action="autenticador.php" method="POST">
+
+        <!--
+    Cria varíaveis que serão preenchidas com os dados de login e senha do usuário
+    Esses dados serão enviados ao arquivo php através do metodo POST
+    -->
+        <label> E-mail:</label><br>
+        <input type="email" name="email_login" placeholder="Seu e-mail" required>
+        <br><br>
+
+        <label>Senha:</label><br>
+        <input type="password" name="senha_login" placeholder="Sua senha" required>
+        <br><br>
+
+        <button type="submit">Fazer Login</button>
+    </form>
+
+</body>
+
+</html>
