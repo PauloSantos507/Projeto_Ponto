@@ -1,22 +1,33 @@
+<?php
+session_start();
+
+if(!isset($_SESSION['usuario_id'])){
+    header("Location: login.html");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Registrar Ponto</title>
+
 </head>
 
 <body>
-    <h1> "Bater Ponto </h1>
+    <h1> Olá, <?php echo $_SESSION['usuario_nome']; ?>!</h1>
 
-    <form action="registrar_ponto.php" method="POST">
-    <h2>Registrar Ponto</h2>
-    <p>Olá, <strong>Nome do Usuário</strong></p>
-    <input type="hidden" name="usuario_id" value="1"> 
+    <p>Clique no botão para registrar seu ponto de entrada ou saída</p>
     
-    <button type="submit">Bater Ponto Agora</button>
-
+    <form action="../includes/bater_ponto.php" method="POST">
+        <button type="submit">Bater Ponto Agora</button>
     </form>
+
+    
+    <br>
+    <a href="../includes/logout.php">Sair do Sistema</a>
 </body>
 
 </html>
