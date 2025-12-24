@@ -4,7 +4,7 @@ ini_set('log_errors', 1);
 ini_set('error_log', __DIR__ . '/erro.log');
 error_reporting(E_ALL);
 
-require_once __DIR__ . '../Projeto_Ponto/config/conexao.php/';
+require_once __DIR__ . '/../config/conexao.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -35,5 +35,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } catch (PDOException $e) {
         error_log("ERRO PDO: " . $e->getMessage());
         echo "Erro ao cadastrar usuário. Verifique o log.";
+        
+    }
+    catch (PDOException $e) {
+    // Grava uma mensagem personalizada no arquivo erro.log
+    error_log("Erro no banco de dados: " . $e->getMessage());
+    
+    // Exibe uma mensagem amigável para o usuário
+    echo "Ocorreu um erro interno. Por favor, tente novamente mais tarde.";
     }
 }

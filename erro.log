@@ -28,3 +28,34 @@
 
 [19-Dec-2025 17:15:03 Europe/Berlin] SQL: INSERT INTO usuarios (nome, email, senha, perfil)
                 VALUES (:nome, :email, :senha, :perfil)
+[23-Dec-2025 17:55:56 Europe/Berlin] PHP Warning:  Undefined array key "ids" in C:\xampp\htdocs\Projeto_Ponto\includes\autenticador.php on line 20
+[23-Dec-2025 18:16:56 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente in C:\xampp\htdocs\Projeto_Ponto\config\conexao.php:31
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\includes\autenticador.php(3): require_once()
+#1 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\config\conexao.php on line 31
+[23-Dec-2025 18:17:13 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente in C:\xampp\htdocs\Projeto_Ponto\config\conexao.php:31
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\includes\autenticador.php(3): require_once()
+#1 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\config\conexao.php on line 31
+[23-Dec-2025 18:26:23 Europe/Berlin] POST RECEBIDO: Array
+(
+    [nome_usuario] => Brenda
+    [email_usuario] => brenda@gmail.com
+    [senha_usuario] => 2
+    [perfil_usuario] => 0
+)
+
+[23-Dec-2025 18:26:23 Europe/Berlin] SQL: INSERT INTO usuarios (nome, email, senha, perfil)
+                VALUES (:nome, :email, :senha, :perfil)
+[23-Dec-2025 18:34:17 Europe/Berlin] POST RECEBIDO: Array
+(
+    [nome_usuario] => teste
+    [email_usuario] => teste@gmail.com
+    [senha_usuario] => 1
+    [perfil_usuario] => 0
+)
+
+[23-Dec-2025 18:34:17 Europe/Berlin] SQL: INSERT INTO usuarios (nome, email, senha, perfil)
+                VALUES (:nome, :email, :senha, :perfil)

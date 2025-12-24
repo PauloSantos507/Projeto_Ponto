@@ -1,4 +1,12 @@
 <?php
+// Habilita o registro de erros em um arquivo específico
+ini_set('log_errors', 1);
+
+// Define o caminho do arquivo de log (na raiz do seu projeto)
+ini_set('error_log', __DIR__ . '/../erro.log');
+
+// Opcional: Desabilita a exibição de erros na tela (bom para produção)
+ini_set('display_errors', 0);
 // variaveis do ambiente
 
     $host = 'localhost';

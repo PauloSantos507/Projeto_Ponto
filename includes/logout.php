@@ -1,1 +1,0 @@
-// arquivo que contera dados para logout

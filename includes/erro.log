@@ -1,0 +1,40 @@
+[23-Dec-2025 16:02:43 Europe/Berlin] PHP Warning:  require_once(C:\xampp\htdocs\Projeto_Ponto\includes../Projeto_Ponto/config/conexao.php/): Failed to open stream: No such file or directory in C:\xampp\htdocs\Projeto_Ponto\includes\criar_usuario.php on line 7
+[23-Dec-2025 16:02:43 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\Projeto_Ponto\includes../Projeto_Ponto/config/conexao.php/' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\Projeto_Ponto\includes\criar_usuario.php:7
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\includes\criar_usuario.php on line 7
+[23-Dec-2025 16:05:39 Europe/Berlin] PHP Warning:  require_once(C:\xampp\htdocs\Projeto_Ponto\includes../Projeto_Ponto/config/conexao.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\Projeto_Ponto\includes\criar_usuario.php on line 7
+[23-Dec-2025 16:05:39 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\Projeto_Ponto\includes../Projeto_Ponto/config/conexao.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\Projeto_Ponto\includes\criar_usuario.php:7
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\includes\criar_usuario.php on line 7
+[23-Dec-2025 17:15:50 Europe/Berlin] POST RECEBIDO: Array
+(
+    [nome_usuario] => Paulo
+    [email_usuario] => paulo@gmail.com
+    [senha_usuario] => 1
+    [perfil_usuario] => 0
+)
+
+[23-Dec-2025 17:15:50 Europe/Berlin] SQL: INSERT INTO usuarios (nome, email, senha, perfil)
+                VALUES (:nome, :email, :senha, :perfil)
+[23-Dec-2025 17:21:36 Europe/Berlin] POST RECEBIDO: Array
+(
+    [nome_usuario] => Paulo
+    [email_usuario] => paulo@gmail.com
+    [senha_usuario] => 1
+    [perfil_usuario] => 0
+)
+
+[23-Dec-2025 17:21:36 Europe/Berlin] SQL: INSERT INTO usuarios (nome, email, senha, perfil)
+                VALUES (:nome, :email, :senha, :perfil)
+[23-Dec-2025 17:39:13 Europe/Berlin] POST RECEBIDO: Array
+(
+    [nome_usuario] => Paulo
+    [email_usuario] => paulo@gmail.com
+    [senha_usuario] => 1
+    [perfil_usuario] => 0
+)
+
+[23-Dec-2025 17:39:13 Europe/Berlin] SQL: INSERT INTO usuarios (nome, email, senha, perfil)
+                VALUES (:nome, :email, :senha, :perfil)
