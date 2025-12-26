@@ -59,3 +59,27 @@ Stack trace:
 
 [23-Dec-2025 18:34:17 Europe/Berlin] SQL: INSERT INTO usuarios (nome, email, senha, perfil)
                 VALUES (:nome, :email, :senha, :perfil)
+[26-Dec-2025 18:58:02 Europe/Berlin] POST RECEBIDO: Array
+(
+    [nome_usuario] => Paulo
+    [email_usuario] => paulo@gmail.com
+    [senha_usuario] => 1
+    [perfil_usuario] => 0
+)
+
+[26-Dec-2025 18:58:02 Europe/Berlin] SQL: INSERT INTO usuarios (nome, email, senha, perfil)
+                VALUES (:nome, :email, :senha, :perfil)
+[26-Dec-2025 18:58:47 Europe/Berlin] PHP Warning:  include(../includes/tabela_historico.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\Projeto_Ponto\pages\bater_ponto.php on line 22
+[26-Dec-2025 18:58:47 Europe/Berlin] PHP Warning:  include(): Failed opening '../includes/tabela_historico.php' for inclusion (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\Projeto_Ponto\pages\bater_ponto.php on line 22
+[26-Dec-2025 18:59:34 Europe/Berlin] PHP Warning:  Undefined array key "REQUEST_METHOD" in C:\xampp\htdocs\Projeto_Ponto\includes\autenticador.php on line 5
+[26-Dec-2025 18:59:55 Europe/Berlin] PHP Warning:  Undefined array key "REQUEST_METHOD" in C:\xampp\htdocs\Projeto_Ponto\includes\autenticador.php on line 5
+[26-Dec-2025 19:26:02 Europe/Berlin] POST RECEBIDO: Array
+(
+    [nome_usuario] => Paulo
+    [email_usuario] => paulo@gmail.com
+    [senha_usuario] => 1
+    [perfil_usuario] => 0
+)
+
+[26-Dec-2025 19:26:03 Europe/Berlin] SQL: INSERT INTO usuarios (nome, email, senha, perfil)
+                VALUES (:nome, :email, :senha, :perfil)
