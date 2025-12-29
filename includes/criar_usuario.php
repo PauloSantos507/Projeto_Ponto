@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $stmt->execute();
 
-        echo "Usuário cadastrado com sucesso!";
+        echo "Usuário cadastrado com sucesso! <br><a href='../pages/bater_ponto.php'>Voltar para o Início</a>";
 
     } catch (PDOException $e) {
         error_log("ERRO PDO: " . $e->getMessage());

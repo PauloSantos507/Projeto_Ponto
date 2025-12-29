@@ -1,3 +1,12 @@
+<?php if (isset($_SESSION['usuario_perfil']) && $_SESSION['usuario_perfil'] == 1): ?>
+    <nav style="background: #333; color: white; padding: 10px; margin-bottom: 20px;">
+        <strong>Painel Administrativo:</strong> | 
+        <a href="criar_usuario.html" style="color: white;">Cadastrar Novo Usuário</a> | 
+        <a href="relatorio_pontos.php" style="color: white;">Ver Relatórios</a> | 
+        <a href="../includes/encerrar_sessao.php" style="color: white;">Sair</a>
+    </nav>
+<?php endif; ?>
+
 <?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="pt-br">

@@ -1,0 +1,10 @@
+[26-Dec-2025 20:12:06 Europe/Berlin] POST RECEBIDO: Array
+(
+    [nome_usuario] => Maria
+    [email_usuario] => maria@gmail.com
+    [senha_usuario] => 1
+    [perfil_usuario] => 0
+)
+
+[26-Dec-2025 20:12:06 Europe/Berlin] SQL: INSERT INTO usuarios (nome, email, senha, perfil)
+                VALUES (:nome, :email, :senha, :perfil)

@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 require_once __DIR__ . '/../config/conexao.php';
@@ -7,51 +8,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $senha = $_POST['senha_login'];
 
     try {
-        $sql = "SELECT id, nome, senha, perfil FROM usuarios WHERE email = :email";
+        // 1. Busca o usuário e o perfil (Admin ou Funcionário)
+        $sql = "SELECT id, senha, perfil FROM usuarios WHERE email = :email";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([':email' => $email]);
         $usuario = $stmt->fetch();
 
+        // 2. Valida a senha
         if ($usuario && password_verify($senha, $usuario['senha'])) {
-            // Salva os dados na sessão
-            $_SESSION['usuario_id']   = $usuario['id'];
-            $_SESSION['usuario_nome'] = $usuario['nome'];
-            $_SESSION['usuario_perfil'] = $usuario['perfil']; // 0 para Func, 1 para Admin
+            // Salva o perfil na sessão para controlar o menu admin
+            $_SESSION['usuario_id'] = $usuario['id'];
+            $_SESSION['usuario_perfil'] = $usuario['perfil']; 
 
             $data_hoje = date('Y-m-d');
             $hora_agora = date('H:i:s');
 
-            // LÓGICA DE ALTERNÂNCIA: Verifica a última batida de hoje
-            $sql_check = "SELECT tipo FROM registros_ponto 
+            // 3. Lógica de Alternância: Busca a última batida do usuário hoje
+            // Note que aqui já usamos o novo nome: tipo_batida
+            $sql_ultimo = "SELECT tipo_batida FROM registros_ponto 
                         WHERE id_usuario = :uid AND data_registro = :data 
                         ORDER BY id DESC LIMIT 1";
-            $stmt_check = $pdo->prepare($sql_check);
-            $stmt_check->execute([':uid' => $usuario['id'], ':data' => $data_hoje]);
-            $ultima = $stmt_check->fetch();
+            $stmt_u = $pdo->prepare($sql_ultimo);
+            $stmt_u->execute([':uid' => $usuario['id'], ':data' => $data_hoje]);
+            $ultimo_ponto = $stmt_u->fetch();
 
-            // Se a última foi 'entrada', agora será 'saida'. Caso contrário, 'entrada'.
-            $novo_tipo = ($ultima && $ultima['tipo'] == 'entrada') ? 'saida' : 'entrada';
+            // Se a última foi 'entrada', a próxima é 'saida'. Caso contrário, 'entrada'.
+            $novo_tipo = ($ultimo_ponto && $ultimo_ponto['tipo_batida'] === 'entrada') ? 'saida' : 'entrada';
 
-            $sql_ins = "INSERT INTO registros_ponto (id_usuario, data_registro, hora_registro, tipo) 
+            // 4. Registra o ponto com a coluna correta: tipo_batida
+            $sql_ponto = "INSERT INTO registros_ponto (id_usuario, data_registro, hora_registro, tipo_batida) 
                         VALUES (:uid, :data, :hora, :tipo)";
-            $stmt_ins = $pdo->prepare($sql_ins);
-            $stmt_ins->execute([
+            $stmt_ponto = $pdo->prepare($sql_ponto);
+            $stmt_ponto->execute([
                 ':uid' => $usuario['id'], 
                 ':data' => $data_hoje, 
                 ':hora' => $hora_agora,
                 ':tipo' => $novo_tipo
             ]);
 
-            $msg = "Ponto de " . strtoupper($novo_tipo) . " registrado com sucesso às $hora_agora!";
-            header("Location: ../pages/bater_ponto.php?mensagem=" . urlencode($msg));
-            exit();
-
+            $msg = "Ponto de " . strtoupper($novo_tipo) . " registrado com sucesso!";
         } else {
-            header("Location: ../pages/bater_ponto.php?mensagem=" . urlencode("Erro: Dados inválidos."));
-            exit();
+            $msg = "Erro: E-mail ou senha incorretos.";
         }
+
+        // 5. Retorna para a página inicial com a mensagem
+        header("Location: ../pages/bater_ponto.php?mensagem=" . urlencode($msg));
+        exit();
+
     } catch (PDOException $e) {
-        header("Location: ../pages/bater_ponto.php?mensagem=" . urlencode("Erro no servidor."));
+        // Registra o erro no log que configuramos no conexao.php
+        error_log("Erro no Autenticador: " . $e->getMessage());
+        header("Location: ../pages/bater_ponto.php?mensagem=" . urlencode("Erro interno no servidor."));
         exit();
     }
 }

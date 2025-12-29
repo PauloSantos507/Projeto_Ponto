@@ -83,3 +83,23 @@ Stack trace:
 
 [26-Dec-2025 19:26:03 Europe/Berlin] SQL: INSERT INTO usuarios (nome, email, senha, perfil)
                 VALUES (:nome, :email, :senha, :perfil)
+[26-Dec-2025 19:46:36 Europe/Berlin] POST RECEBIDO: Array
+(
+    [nome_usuario] => Paulo
+    [email_usuario] => paulo@gmail.com
+    [senha_usuario] => 1
+    [perfil_usuario] => 0
+)
+
+[26-Dec-2025 19:46:36 Europe/Berlin] SQL: INSERT INTO usuarios (nome, email, senha, perfil)
+                VALUES (:nome, :email, :senha, :perfil)
+[26-Dec-2025 19:47:17 Europe/Berlin] POST RECEBIDO: Array
+(
+    [nome_usuario] => teste
+    [email_usuario] => teste@gmail.com
+    [senha_usuario] => 2
+    [perfil_usuario] => 1
+)
+
+[26-Dec-2025 19:47:17 Europe/Berlin] SQL: INSERT INTO usuarios (nome, email, senha, perfil)
+                VALUES (:nome, :email, :senha, :perfil)
