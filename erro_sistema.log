@@ -8,3 +8,23 @@
 
 [26-Dec-2025 20:12:06 Europe/Berlin] SQL: INSERT INTO usuarios (nome, email, senha, perfil)
                 VALUES (:nome, :email, :senha, :perfil)
+[30-Dec-2025 18:12:58 Europe/Berlin] POST RECEBIDO: Array
+(
+    [nome_usuario] => teste
+    [email_usuario] => teste@gmail.com
+    [senha_usuario] => 1
+    [perfil_usuario] => 0
+)
+
+[30-Dec-2025 18:12:58 Europe/Berlin] SQL: INSERT INTO usuarios (nome, email, senha, perfil)
+                VALUES (:nome, :email, :senha, :perfil)
+[30-Dec-2025 18:13:49 Europe/Berlin] POST RECEBIDO: Array
+(
+    [nome_usuario] => Paulo
+    [email_usuario] => paulo@gmail.com
+    [senha_usuario] => 2
+    [perfil_usuario] => 1
+)
+
+[30-Dec-2025 18:13:49 Europe/Berlin] SQL: INSERT INTO usuarios (nome, email, senha, perfil)
+                VALUES (:nome, :email, :senha, :perfil)
