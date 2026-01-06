@@ -13,11 +13,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome   = $_POST['nome_usuario'] ?? null;
     $email  = $_POST['email_usuario'] ?? null;
     $perfil = $_POST['perfil_usuario'] ?? null;
+    $carga_horaria = $_POST['carga_horaria'] ?? null;
     $senhaHash = password_hash($_POST['senha_usuario'], PASSWORD_DEFAULT);
 
     try {
-        $sql = "INSERT INTO usuarios (nome, email, senha, perfil)
-                VALUES (:nome, :email, :senha, :perfil)";
+        $sql = "INSERT INTO usuarios (nome, email, senha, perfil, carga_horaria)
+                VALUES (:nome, :email, :senha, :perfil, :carga)";
 
         error_log("SQL: $sql");
 
@@ -27,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':senha', $senhaHash);
         $stmt->bindParam(':perfil', $perfil);
+        $stmt->bindParam(':carga', $carga_horaria);
 
         $stmt->execute();
 

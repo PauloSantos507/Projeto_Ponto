@@ -28,3 +28,141 @@
 
 [30-Dec-2025 18:13:49 Europe/Berlin] SQL: INSERT INTO usuarios (nome, email, senha, perfil)
                 VALUES (:nome, :email, :senha, :perfil)
+[06-Jan-2026 17:14:24 Europe/Berlin] POST RECEBIDO: Array
+(
+    [nome_usuario] => Paulo
+    [email_usuario] => paulo@gmail.com
+    [senha_usuario] => 123
+    [perfil_usuario] => 0
+    [carga_horaria] => 6
+)
+
+[06-Jan-2026 17:14:24 Europe/Berlin] SQL: INSERT INTO usuarios (nome, email, senha, perfil, carga hororaria)
+                VALUES (:nome, :email, :senha, :perfil, :carga)
+[06-Jan-2026 17:14:24 Europe/Berlin] ERRO PDO: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'hororaria)
+                VALUES (?, ?, ?, ?, ?)' at line 1
+[06-Jan-2026 17:26:15 Europe/Berlin] POST RECEBIDO: Array
+(
+    [nome_usuario] => Paulo
+    [email_usuario] => paulo@gmail.com
+    [senha_usuario] => 1
+    [perfil_usuario] => 0
+    [carga_horaria] => 6
+)
+
+[06-Jan-2026 17:26:15 Europe/Berlin] SQL: INSERT INTO usuarios (nome, email, senha, perfil, carga horaria)
+                VALUES (:nome, :email, :senha, :perfil, :carga)
+[06-Jan-2026 17:26:15 Europe/Berlin] ERRO PDO: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'horaria)
+                VALUES (?, ?, ?, ?, ?)' at line 1
+[06-Jan-2026 17:27:45 Europe/Berlin] POST RECEBIDO: Array
+(
+    [nome_usuario] => Paulo
+    [email_usuario] => paulo@gmail.com
+    [senha_usuario] => 123
+    [perfil_usuario] => 0
+    [carga_horaria] => 6
+)
+
+[06-Jan-2026 17:27:45 Europe/Berlin] SQL: INSERT INTO usuarios (nome, email, senha, perfil, carga_horaria)
+                VALUES (:nome, :email, :senha, :perfil, :carga)
+[06-Jan-2026 17:28:45 Europe/Berlin] POST RECEBIDO: Array
+(
+    [nome_usuario] => admin
+    [email_usuario] => admin@gmail
+    [senha_usuario] => 123
+    [perfil_usuario] => 1
+    [carga_horaria] => 8
+)
+
+[06-Jan-2026 17:28:45 Europe/Berlin] SQL: INSERT INTO usuarios (nome, email, senha, perfil, carga_horaria)
+                VALUES (:nome, :email, :senha, :perfil, :carga)
+[06-Jan-2026 19:45:37 Europe/Berlin] PHP Warning:  Undefined variable $usuarios in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 97
+[06-Jan-2026 19:45:37 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 97
+[06-Jan-2026 19:45:54 Europe/Berlin] PHP Warning:  Undefined variable $usuarios in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 97
+[06-Jan-2026 19:45:54 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 97
+[06-Jan-2026 19:46:35 Europe/Berlin] PHP Warning:  Undefined variable $usuarios in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 97
+[06-Jan-2026 19:46:35 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 97
+[06-Jan-2026 19:57:46 Europe/Berlin] PHP Warning:  Undefined variable $dados_relatorio in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 46
+[06-Jan-2026 19:57:46 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 46
+[06-Jan-2026 19:57:46 Europe/Berlin] PHP Warning:  Undefined variable $dados_relatorio in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 54
+[06-Jan-2026 19:57:46 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 54
+[06-Jan-2026 19:57:46 Europe/Berlin] PHP Warning:  Undefined variable $dados_relatorio in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 187
+[06-Jan-2026 19:57:46 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 187
+[06-Jan-2026 19:57:46 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Unknown format specifier "m" in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:76
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(76): sprintf('%s%02dh %02min', '', 0.0, 0.0)
+#1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(208): formatarHoras(0)
+#2 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 76
+[06-Jan-2026 19:57:55 Europe/Berlin] PHP Warning:  Undefined variable $dados_relatorio in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 46
+[06-Jan-2026 19:57:55 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 46
+[06-Jan-2026 19:57:55 Europe/Berlin] PHP Warning:  Undefined variable $dados_relatorio in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 54
+[06-Jan-2026 19:57:55 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 54
+[06-Jan-2026 19:57:55 Europe/Berlin] PHP Warning:  Undefined variable $dados_relatorio in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 187
+[06-Jan-2026 19:57:55 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 187
+[06-Jan-2026 19:57:55 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Unknown format specifier "m" in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:76
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(76): sprintf('%s%02dh %02min', '', 0.0, 0.0)
+#1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(208): formatarHoras(0)
+#2 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 76
+[06-Jan-2026 19:58:02 Europe/Berlin] PHP Warning:  Undefined variable $dados_relatorio in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 46
+[06-Jan-2026 19:58:02 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 46
+[06-Jan-2026 19:58:02 Europe/Berlin] PHP Warning:  Undefined variable $dados_relatorio in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 54
+[06-Jan-2026 19:58:02 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 54
+[06-Jan-2026 19:58:02 Europe/Berlin] PHP Warning:  Undefined variable $dados_relatorio in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 187
+[06-Jan-2026 19:58:02 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 187
+[06-Jan-2026 19:58:02 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Unknown format specifier "m" in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:76
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(76): sprintf('%s%02dh %02min', '', 0.0, 0.0)
+#1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(208): formatarHoras(0)
+#2 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 76
+[06-Jan-2026 20:10:24 Europe/Berlin] PHP Warning:  Undefined variable $dados_relatorio in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 46
+[06-Jan-2026 20:10:24 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 46
+[06-Jan-2026 20:10:24 Europe/Berlin] PHP Warning:  Undefined variable $dados_relatorio in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 54
+[06-Jan-2026 20:10:24 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 54
+[06-Jan-2026 20:10:24 Europe/Berlin] PHP Warning:  Undefined variable $dados_relatorio in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 187
+[06-Jan-2026 20:10:24 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 187
+[06-Jan-2026 20:10:24 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Unknown format specifier "m" in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:76
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(76): sprintf('%s%02dh %02min', '', 0.0, 0.0)
+#1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(208): formatarHoras(0)
+#2 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 76
+[06-Jan-2026 20:10:25 Europe/Berlin] PHP Warning:  Undefined variable $dados_relatorio in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 46
+[06-Jan-2026 20:10:25 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 46
+[06-Jan-2026 20:10:25 Europe/Berlin] PHP Warning:  Undefined variable $dados_relatorio in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 54
+[06-Jan-2026 20:10:25 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 54
+[06-Jan-2026 20:10:25 Europe/Berlin] PHP Warning:  Undefined variable $dados_relatorio in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 187
+[06-Jan-2026 20:10:25 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 187
+[06-Jan-2026 20:10:25 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Unknown format specifier "m" in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:76
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(76): sprintf('%s%02dh %02min', '', 0.0, 0.0)
+#1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(208): formatarHoras(0)
+#2 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 76
+[06-Jan-2026 20:10:25 Europe/Berlin] PHP Warning:  Undefined variable $dados_relatorio in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 46
+[06-Jan-2026 20:10:25 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 46
+[06-Jan-2026 20:10:25 Europe/Berlin] PHP Warning:  Undefined variable $dados_relatorio in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 54
+[06-Jan-2026 20:10:25 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 54
+[06-Jan-2026 20:10:25 Europe/Berlin] PHP Warning:  Undefined variable $dados_relatorio in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 187
+[06-Jan-2026 20:10:25 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 187
+[06-Jan-2026 20:10:25 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Unknown format specifier "m" in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:76
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(76): sprintf('%s%02dh %02min', '', 0.0, 0.0)
+#1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(208): formatarHoras(0)
+#2 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 76
+[06-Jan-2026 20:11:13 Europe/Berlin] PHP Warning:  Undefined variable $dados_relatorio in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 46
+[06-Jan-2026 20:11:13 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 46
+[06-Jan-2026 20:11:13 Europe/Berlin] PHP Warning:  Undefined variable $dados_relatorio in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 54
+[06-Jan-2026 20:11:13 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 54
+[06-Jan-2026 20:11:13 Europe/Berlin] PHP Warning:  Undefined variable $dados_relatorio in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 187
+[06-Jan-2026 20:11:13 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 187
+[06-Jan-2026 20:11:13 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Unknown format specifier "m" in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:76
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(76): sprintf('%s%02dh %02min', '', 0.0, 0.0)
+#1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(208): formatarHoras(0)
+#2 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 76
