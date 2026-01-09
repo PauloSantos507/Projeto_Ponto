@@ -166,3 +166,226 @@ Stack trace:
 #1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(208): formatarHoras(0)
 #2 {main}
   thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 76
+[08-Jan-2026 14:57:15 Europe/Berlin] PHP Warning:  Undefined variable $dados_relatorio in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 46
+[08-Jan-2026 14:57:15 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 46
+[08-Jan-2026 14:57:15 Europe/Berlin] PHP Warning:  Undefined variable $dados_relatorio in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 54
+[08-Jan-2026 14:57:15 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 54
+[08-Jan-2026 14:57:15 Europe/Berlin] PHP Warning:  Undefined variable $dados_relatorio in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 187
+[08-Jan-2026 14:57:15 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 187
+[08-Jan-2026 14:57:15 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Unknown format specifier "m" in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:76
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(76): sprintf('%s%02dh %02min', '', 0.0, 0.0)
+#1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(208): formatarHoras(0)
+#2 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 76
+[08-Jan-2026 15:27:17 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Unknown format specifier "m" in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:77
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(77): sprintf('%s%02dh %02min', '', 2.0, 18.0)
+#1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(198): formatarHoras(8288)
+#2 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 77
+[08-Jan-2026 15:28:20 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Unknown format specifier "m" in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:77
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(77): sprintf('%s%02dh %02min', '', 2.0, 18.0)
+#1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(198): formatarHoras(8288)
+#2 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 77
+[08-Jan-2026 15:28:28 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Unknown format specifier "m" in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:77
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(77): sprintf('%s%02dh %02min', '', 2.0, 18.0)
+#1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(198): formatarHoras(8288)
+#2 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 77
+[08-Jan-2026 15:28:28 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Unknown format specifier "m" in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:77
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(77): sprintf('%s%02dh %02min', '', 2.0, 18.0)
+#1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(198): formatarHoras(8288)
+#2 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 77
+[08-Jan-2026 15:28:28 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Unknown format specifier "m" in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:77
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(77): sprintf('%s%02dh %02min', '', 2.0, 18.0)
+#1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(198): formatarHoras(8288)
+#2 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 77
+[08-Jan-2026 15:28:29 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Unknown format specifier "m" in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:77
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(77): sprintf('%s%02dh %02min', '', 2.0, 18.0)
+#1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(198): formatarHoras(8288)
+#2 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 77
+[08-Jan-2026 15:28:38 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Unknown format specifier "m" in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:77
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(77): sprintf('%s%02dh %02min', '', 2.0, 18.0)
+#1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(198): formatarHoras(8288)
+#2 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 77
+[08-Jan-2026 15:28:38 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Unknown format specifier "m" in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:77
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(77): sprintf('%s%02dh %02min', '', 2.0, 18.0)
+#1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(198): formatarHoras(8288)
+#2 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 77
+[08-Jan-2026 15:28:39 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Unknown format specifier "m" in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:77
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(77): sprintf('%s%02dh %02min', '', 2.0, 18.0)
+#1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(198): formatarHoras(8288)
+#2 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 77
+[08-Jan-2026 15:28:39 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Unknown format specifier "m" in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:77
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(77): sprintf('%s%02dh %02min', '', 2.0, 18.0)
+#1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(198): formatarHoras(8288)
+#2 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 77
+[08-Jan-2026 15:28:39 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Unknown format specifier "m" in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:77
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(77): sprintf('%s%02dh %02min', '', 2.0, 18.0)
+#1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(198): formatarHoras(8288)
+#2 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 77
+[08-Jan-2026 15:28:39 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Unknown format specifier "m" in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:77
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(77): sprintf('%s%02dh %02min', '', 2.0, 18.0)
+#1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(198): formatarHoras(8288)
+#2 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 77
+[08-Jan-2026 15:28:40 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Unknown format specifier "m" in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:77
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(77): sprintf('%s%02dh %02min', '', 2.0, 18.0)
+#1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(198): formatarHoras(8288)
+#2 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 77
+[08-Jan-2026 15:28:41 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Unknown format specifier "m" in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:77
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(77): sprintf('%s%02dh %02min', '', 2.0, 18.0)
+#1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(198): formatarHoras(8288)
+#2 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 77
+[08-Jan-2026 15:28:42 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Unknown format specifier "m" in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:77
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(77): sprintf('%s%02dh %02min', '', 2.0, 18.0)
+#1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(198): formatarHoras(8288)
+#2 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 77
+[08-Jan-2026 15:28:42 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Unknown format specifier "m" in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:77
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(77): sprintf('%s%02dh %02min', '', 2.0, 18.0)
+#1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(198): formatarHoras(8288)
+#2 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 77
+[08-Jan-2026 15:28:42 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Unknown format specifier "m" in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:77
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(77): sprintf('%s%02dh %02min', '', 2.0, 18.0)
+#1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(198): formatarHoras(8288)
+#2 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 77
+[08-Jan-2026 15:28:43 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Unknown format specifier "m" in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:77
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(77): sprintf('%s%02dh %02min', '', 2.0, 18.0)
+#1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(198): formatarHoras(8288)
+#2 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 77
+[08-Jan-2026 15:28:43 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Unknown format specifier "m" in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:77
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(77): sprintf('%s%02dh %02min', '', 2.0, 18.0)
+#1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(198): formatarHoras(8288)
+#2 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 77
+[08-Jan-2026 15:28:46 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Unknown format specifier "m" in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:77
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(77): sprintf('%s%02dh %02min', '', 2.0, 30.0)
+#1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(198): formatarHoras(9034)
+#2 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 77
+[08-Jan-2026 15:28:59 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Unknown format specifier "m" in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:77
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(77): sprintf('%s%02dh %02min', '', 2.0, 18.0)
+#1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(198): formatarHoras(8288)
+#2 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 77
+[08-Jan-2026 15:29:02 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Unknown format specifier "m" in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:77
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(77): sprintf('%s%02dh %02min', '', 2.0, 30.0)
+#1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(198): formatarHoras(9034)
+#2 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 77
+[08-Jan-2026 15:29:02 Europe/Berlin] PHP Fatal error:  Uncaught ValueError: Unknown format specifier "m" in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:77
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(77): sprintf('%s%02dh %02min', '', 2.0, 30.0)
+#1 C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php(198): formatarHoras(9034)
+#2 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 77
+[08-Jan-2026 17:30:43 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Cannot access offset of type string on string in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:52
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 52
+[08-Jan-2026 17:30:45 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Cannot access offset of type string on string in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:52
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 52
+[08-Jan-2026 17:30:46 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Cannot access offset of type string on string in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:52
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 52
+[08-Jan-2026 17:35:30 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Cannot access offset of type string on string in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:52
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 52
+[08-Jan-2026 17:35:46 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: Cannot access offset of type string on string in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php:52
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 52
+[09-Jan-2026 14:46:53 Europe/Berlin] POST RECEBIDO: Array
+(
+    [nome_usuario] => Maria
+    [email_usuario] => maria@gmail.com
+    [senha_usuario] => 123
+    [perfil_usuario] => 0
+    [carga_horaria] => 8
+)
+
+[09-Jan-2026 14:46:53 Europe/Berlin] SQL: INSERT INTO usuarios (nome, email, senha, perfil, carga_horaria)
+                VALUES (:nome, :email, :senha, :perfil, :carga)
+[09-Jan-2026 14:56:05 Europe/Berlin] PHP Warning:  Undefined variable $conn in C:\xampp\htdocs\Projeto_Ponto\pages\login.php on line 21
+[09-Jan-2026 14:56:05 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in C:\xampp\htdocs\Projeto_Ponto\pages\login.php:21
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\login.php on line 21
+[09-Jan-2026 14:56:44 Europe/Berlin] PHP Warning:  Undefined variable $conn in C:\xampp\htdocs\Projeto_Ponto\pages\login.php on line 21
+[09-Jan-2026 14:56:44 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in C:\xampp\htdocs\Projeto_Ponto\pages\login.php:21
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\login.php on line 21
+[09-Jan-2026 14:58:57 Europe/Berlin] PHP Warning:  Undefined variable $conn in C:\xampp\htdocs\Projeto_Ponto\pages\login.php on line 21
+[09-Jan-2026 14:58:57 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in C:\xampp\htdocs\Projeto_Ponto\pages\login.php:21
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\login.php on line 21
+[09-Jan-2026 14:59:20 Europe/Berlin] PHP Warning:  Undefined variable $conn in C:\xampp\htdocs\Projeto_Ponto\pages\login.php on line 21
+[09-Jan-2026 14:59:20 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in C:\xampp\htdocs\Projeto_Ponto\pages\login.php:21
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\pages\login.php on line 21
+[09-Jan-2026 15:12:42 Europe/Berlin] POST RECEBIDO: Array
+(
+    [nome_usuario] => Admin Teste
+    [email_usuario] => admin@gmail.com
+    [senha_usuario] => 123
+    [perfil_usuario] => 1
+    [carga_horaria] => 8
+)
+
+[09-Jan-2026 15:12:42 Europe/Berlin] SQL: INSERT INTO usuarios (nome, email, senha, perfil, carga_horaria)
+                VALUES (:nome, :email, :senha, :perfil, :carga)
+[09-Jan-2026 15:13:10 Europe/Berlin] POST RECEBIDO: Array
+(
+    [nome_usuario] => Paulo de Oliveira Santos
+    [email_usuario] => paulo@gmail.com
+    [senha_usuario] => 123
+    [perfil_usuario] => 0
+    [carga_horaria] => 6
+)
+
+[09-Jan-2026 15:13:10 Europe/Berlin] SQL: INSERT INTO usuarios (nome, email, senha, perfil, carga_horaria)
+                VALUES (:nome, :email, :senha, :perfil, :carga)
