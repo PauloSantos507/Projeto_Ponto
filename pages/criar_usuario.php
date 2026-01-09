@@ -18,9 +18,9 @@ if (!isset($_SESSION['usuario_perfil']) || $_SESSION['usuario_perfil'] != 1) {
         h1 { color: #333; font-size: 24px; margin-bottom: 20px; }
         label { display: block; margin-bottom: 5px; color: #555; font-weight: bold; margin-top: 15px; }
         input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; margin-top: 25px; }
-        button:hover { background: #218838; }
-        .voltar { text-decoration: none; color: #007bff; display: inline-block; margin-bottom: 15px; }
+        button { width: 100%; padding: 12px; background: #ca521f; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; margin-top: 25px; }
+        button:hover { background: #ca521f; }
+        .voltar { text-decoration: none; color: #dc931a; display: inline-block; margin-bottom: 15px; }
     </style>
 </head>
 <body>

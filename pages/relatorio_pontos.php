@@ -3,15 +3,29 @@ date_default_timezone_set('America/Sao_Paulo');
 session_start();
 require_once __DIR__ . '/../config/conexao.php';
 
-// 1. SEGURANÇA: Só Admin acessa
-if (!isset($_SESSION['usuario_perfil']) || $_SESSION['usuario_perfil'] != 1) {
-    header("Location: bater_ponto.php?mensagem=" . urlencode("Acesso negado."));
+// 1. SEGURANÇA: Usuário precisa estar logado
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: login.php?mensagem=" . urlencode("Você precisa estar logado."));
     exit();
 }
 
+// Verifica se é admin ou funcionário padrão
+$is_admin = isset($_SESSION['usuario_perfil']) && $_SESSION['usuario_perfil'] == 1;
+
 // 2. Busca lista de usuários e filtros
-$usuarios_lista = $pdo->query("SELECT id, nome, carga_horaria FROM usuarios ORDER BY nome ASC")->fetchAll();
-$usuario_id = filter_var($_GET['usuario_id'] ?? '', FILTER_VALIDATE_INT) ?: '';
+if ($is_admin) {
+    // Admin pode ver todos os usuários
+    $usuarios_lista = $pdo->query("SELECT id, nome, carga_horaria FROM usuarios ORDER BY nome ASC")->fetchAll();
+    $usuario_id = filter_var($_GET['usuario_id'] ?? '', FILTER_VALIDATE_INT) ?: '';
+} else {
+    // Funcionário padrão só vê ele mesmo
+    $sql = "SELECT id, nome, carga_horaria FROM usuarios WHERE id = :id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([':id' => $_SESSION['usuario_id']]);
+    $usuarios_lista = $stmt->fetchAll();
+    $usuario_id = $_SESSION['usuario_id']; // Força o ID do próprio usuário
+}
+
 $data_inicio = $_GET['data_inicio'] ?? date('Y-m-01');
 $data_fim = $_GET['data_fim'] ?? date('Y-m-d');
 
@@ -91,7 +105,7 @@ function formatarHoras($segundos) {
         th, td { border: 1px solid #dee2e6; padding: 12px; text-align: center; }
         th { background: #f8f9fa; color: #333; }
         .positivo { color: #28a745; font-weight: bold; }
-        .negativo { color: #dc3545; font-weight: bold; }
+        .negativo { color: #ca521f; font-weight: bold; }
         .filtros { display: flex; gap: 15px; margin-bottom: 25px; align-items: flex-end; }
         select, input, button { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
     </style>
@@ -103,6 +117,7 @@ function formatarHoras($segundos) {
         <hr>
 
         <form method="GET" class="filtros">
+            <?php if ($is_admin): ?>
             <div>
                 <label>Funcionário:</label><br>
                 <select name="usuario_id" required>
@@ -114,6 +129,13 @@ function formatarHoras($segundos) {
                     <?php endforeach; ?>
                 </select>
             </div>
+            <?php else: ?>
+                <!-- Funcionário padrão: exibir apenas o nome dele -->
+                <div>
+                    <label>Funcionário:</label><br>
+                    <input type="text" value="<?= htmlspecialchars($usuarios_lista[0]['nome']) ?>" disabled style="background: #f0f0f0;">
+                </div>
+            <?php endif; ?>
             <div>
                 <label>Início:</label><br>
                 <input type="date" name="data_inicio" value="<?= $data_inicio ?>">
