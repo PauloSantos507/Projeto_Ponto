@@ -3,27 +3,23 @@ date_default_timezone_set('America/Sao_Paulo');
 session_start();
 require_once __DIR__ . '/../config/conexao.php';
 
-// 1. SEGURANÇA: Usuário precisa estar logado
 if (!isset($_SESSION['usuario_id'])) {
     header("Location: login.php?mensagem=" . urlencode("Você precisa estar logado."));
     exit();
 }
 
-// Verifica se é admin ou funcionário padrão
 $is_admin = isset($_SESSION['usuario_perfil']) && $_SESSION['usuario_perfil'] == 1;
 
-// 2. Busca lista de usuários e filtros
+// Filtros de busca
 if ($is_admin) {
-    // Admin pode ver todos os usuários
     $usuarios_lista = $pdo->query("SELECT id, nome, carga_horaria FROM usuarios ORDER BY nome ASC")->fetchAll();
     $usuario_id = filter_var($_GET['usuario_id'] ?? '', FILTER_VALIDATE_INT) ?: '';
 } else {
-    // Funcionário padrão só vê ele mesmo
     $sql = "SELECT id, nome, carga_horaria FROM usuarios WHERE id = :id";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':id' => $_SESSION['usuario_id']]);
     $usuarios_lista = $stmt->fetchAll();
-    $usuario_id = $_SESSION['usuario_id']; // Força o ID do próprio usuário
+    $usuario_id = $_SESSION['usuario_id'];
 }
 
 $data_inicio = $_GET['data_inicio'] ?? date('Y-m-01');
@@ -33,109 +29,97 @@ $dados_relatorio = [];
 $carga_do_usuario = 0;
 
 if ($usuario_id) {
-    // Busca carga horária do selecionado
     foreach ($usuarios_lista as $u) {
         if ($u['id'] == $usuario_id) $carga_do_usuario = $u['carga_horaria'];
     }
 
-    // Busca registros brutos ordenados por tempo
-    $sql = "SELECT data_registro, hora_registro, tipo_batida 
-            FROM registros_ponto 
+    $sql = "SELECT id, data_registro, hora_registro FROM registros_ponto 
             WHERE id_usuario = :uid AND data_registro BETWEEN :inicio AND :fim 
             ORDER BY data_registro ASC, hora_registro ASC";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':uid' => $usuario_id, ':inicio' => $data_inicio, ':fim' => $data_fim]);
     $registros = $stmt->fetchAll();
 
-    // 3. ORGANIZAÇÃO EM COLUNAS
     foreach ($registros as $reg) {
         $dia = $reg['data_registro'];
         if (!isset($dados_relatorio[$dia])) {
-            $dados_relatorio[$dia] = [
-                'e1' => '---', 's1' => '---', 'e2' => '---', 's2' => '---',
-                'total_segundos' => 0, 'batidas' => []
-            ];
+            $dados_relatorio[$dia] = ['batidas' => [], 'total_segundos' => 0];
         }
-        $dados_relatorio[$dia]['batidas'][] = $reg;
+        $dados_relatorio[$dia]['batidas'][] = ['id' => $reg['id'], 'hora' => $reg['hora_registro']];
     }
 
-    // Processa os cálculos e atribui às colunas
-foreach ($dados_relatorio as $dia => &$info) {
-    $b = $info['batidas'];
-    
-    // Atribuição visual para as colunas (HH:MM)
-    $info['e1'] = isset($b[0]['hora_registro']) ? substr($b[0]['hora_registro'], 0, 5) : '---';
-    $info['s1'] = isset($b[1]['hora_registro']) ? substr($b[1]['hora_registro'], 0, 5) : '---';
-    $info['e2'] = isset($b[2]['hora_registro']) ? substr($b[2]['hora_registro'], 0, 5) : '---';
-    $info['s2'] = isset($b[3]['hora_registro']) ? substr($b[3]['hora_registro'], 0, 5) : '---';
-
-    $segundos = 0;
-
-    // Cálculo do 1º Período: Da 1ª batida até a 2ª batida
-    if (isset($b[0]['hora_registro']) && isset($b[1]['hora_registro'])) {
-        $segundos += strtotime($b[1]['hora_registro']) - strtotime($b[0]['hora_registro']);
-    }
-
-    // Cálculo do 2º Período: Da 3ª batida até a 4ª batida
-    if (isset($b[2]['hora_registro']) && isset($b[3]['hora_registro'])) {
-        $segundos += strtotime($b[3]['hora_registro']) - strtotime($b[2]['hora_registro']);
-    }
-
-    $info['total_segundos'] = $segundos;
+    foreach ($dados_relatorio as $dia => &$info) {
+        $b = $info['batidas'];
+        $segundos_dia = 0;
+        for ($i = 0; $i < count($b); $i += 2) {
+            if (isset($b[$i]) && isset($b[$i+1])) {
+                $segundos_dia += (strtotime($b[$i+1]['hora']) - strtotime($b[$i]['hora']));
+            }
+        }
+        $info['total_segundos'] = $segundos_dia;
     }
 }
 
 function formatarHoras($segundos) {
-    $h = floor(abs($segundos) / 3600);
-    $m = floor((abs($segundos) % 3600) / 60);
     $sinal = $segundos < 0 ? "-" : "";
-    return sprintf("%s%02dh %02dm", $sinal, $h, $m);
+    $abs = abs($segundos);
+    return sprintf("%s%02dh %02dm", $sinal, floor($abs/3600), floor(($abs%3600)/60));
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>Relatório de Pontos</title>
     <style>
-        body { font-family: Arial, sans-serif; padding: 20px; background: #f4f7f6; }
-        .card { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        /* CSS Integrado para evitar quebras de layout */
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f7f4; padding: 20px; color: #333; }
+        .card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 1100px; margin: auto; }
+        h1 { color: #26272d; margin-bottom: 20px; font-size: 24px; }
+        .filtros { display: flex; gap: 15px; margin: 20px 0; align-items: flex-end; background: #f8f9fa; padding: 15px; border-radius: 8px; }
+        .filtros label { font-size: 13px; font-weight: bold; color: #666; }
+        select, input { padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        .btn-filtrar { background: #ca521f; color: white; border: none; padding: 9px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #dee2e6; padding: 12px; text-align: center; }
-        th { background: #f8f9fa; color: #333; }
+        th { background: #868788; color: white; padding: 12px; font-size: 14px; }
+        td { border-bottom: 1px solid #eee; padding: 12px; text-align: center; font-size: 14px; }
+        
+        .btn-edit-icon { background: none; border: none; cursor: pointer; color: #dc931a; font-size: 16px; margin-left: 5px; transition: 0.2s; }
+        .btn-edit-icon:hover { transform: scale(1.2); }
+        
         .positivo { color: #28a745; font-weight: bold; }
-        .negativo { color: #ca521f; font-weight: bold; }
-        .filtros { display: flex; gap: 15px; margin-bottom: 25px; align-items: flex-end; }
-        select, input, button { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        .negativo { color: #d62a07; font-weight: bold; }
+
+        /* Estilo do Modal */
+        .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; }
+        .modal-container { background:white; width:90%; max-width:400px; margin:10% auto; padding:25px; border-radius:12px; }
+        .form-group { margin-bottom: 15px; }
+        textarea { width: 100%; height: 80px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; resize: none; }
+        .modal-actions { display: flex; gap: 10px; }
+        .btn-save { flex: 2; background: #28a745; color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .btn-cancel { flex: 1; background: #868788; color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; }
     </style>
 </head>
 <body>
     <div class="card">
         <h1>Folha de Ponto Detalhada</h1>
-        <a href="bater_ponto.php" style="text-decoration: none;">⬅ Voltar</a>
-        <hr>
+        <a href="bater_ponto.php" style="color: #dc931a; text-decoration: none; font-size: 14px;">⬅ Voltar para Registro</a>
 
         <form method="GET" class="filtros">
-            <?php if ($is_admin): ?>
             <div>
                 <label>Funcionário:</label><br>
-                <select name="usuario_id" required>
-                    <option value="">Selecione...</option>
-                    <?php foreach ($usuarios_lista as $u): ?>
-                        <option value="<?= $u['id'] ?>" <?= $usuario_id == $u['id'] ? 'selected' : '' ?>>
-                            <?= htmlspecialchars($u['nome']) ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
+                <?php if ($is_admin): ?>
+                    <select name="usuario_id" required>
+                        <option value="">Selecione...</option>
+                        <?php foreach ($usuarios_lista as $u): ?>
+                            <option value="<?= $u['id'] ?>" <?= $usuario_id == $u['id'] ? 'selected' : '' ?>><?= htmlspecialchars($u['nome']) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                <?php else: ?>
+                    <input type="text" value="<?= htmlspecialchars($usuarios_lista[0]['nome']) ?>" disabled>
+                <?php endif; ?>
             </div>
-            <?php else: ?>
-                <!-- Funcionário padrão: exibir apenas o nome dele -->
-                <div>
-                    <label>Funcionário:</label><br>
-                    <input type="text" value="<?= htmlspecialchars($usuarios_lista[0]['nome']) ?>" disabled style="background: #f0f0f0;">
-                </div>
-            <?php endif; ?>
             <div>
                 <label>Início:</label><br>
                 <input type="date" name="data_inicio" value="<?= $data_inicio ?>">
@@ -144,7 +128,7 @@ function formatarHoras($segundos) {
                 <label>Fim:</label><br>
                 <input type="date" name="data_fim" value="<?= $data_fim ?>">
             </div>
-            <button type="submit" style="background: #ff2600ff; color: white; cursor: pointer;">Filtrar</button>
+            <button type="submit" class="btn-filtrar">Filtrar</button>
         </form>
 
         <?php if ($usuario_id): ?>
@@ -163,24 +147,88 @@ function formatarHoras($segundos) {
                 <tbody>
                     <?php 
                     foreach ($dados_relatorio as $dia => $info): 
-                        $segundos_carga = $carga_do_usuario * 3600;
-                        $saldo = $info['total_segundos'] - $segundos_carga;
+                        $saldo = $info['total_segundos'] - ($carga_do_usuario * 3600);
                     ?>
                     <tr>
-                        <td><?= date('d/m/Y', strtotime($dia)) ?></td>
-                        <td><?= $info['e1'] ?></td>
-                        <td><?= $info['s1'] ?></td>
-                        <td><?= $info['e2'] ?></td>
-                        <td><?= $info['s2'] ?></td>
+                        <td><strong><?= date('d/m/Y', strtotime($dia)) ?></strong></td>
+                        <?php for ($i = 0; $i < 4; $i++): ?>
+                            <td>
+                                <?php if (isset($info['batidas'][$i])): 
+                                    $bt = $info['batidas'][$i];
+                                    echo substr($bt['hora'], 0, 5);
+                                    if ($is_admin): ?>
+                                        <button class="btn-edit-icon" onclick="abrirModal('<?= $bt['id'] ?>', '<?= substr($bt['hora'],0,5) ?>')">✏️</button>
+                                    <?php endif;
+                                else: echo "---"; endif; ?>
+                            </td>
+                        <?php endfor; ?>
                         <td><?= formatarHoras($info['total_segundos']) ?></td>
-                        <td class="<?= $saldo >= 0 ? 'positivo' : 'negativo' ?>">
-                            <?= formatarHoras($saldo) ?>
-                        </td>
+                        <td class="<?= $saldo >= 0 ? 'positivo' : 'negativo' ?>"><?= formatarHoras($saldo) ?></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
         <?php endif; ?>
     </div>
+
+    <div id="modalEdicao" class="modal-overlay">
+        <div class="modal-container">
+            <h3>Editar Horário</h3>
+            <hr><br>
+            <input type="hidden" id="edit_id">
+            <div class="form-group">
+                <label>Novo Horário:</label>
+                <input type="time" id="edit_hora" style="width: 100%;">
+            </div>
+            <div class="form-group">
+                <label>Justificativa:</label>
+                <textarea id="edit_justificativa" placeholder="Descreva o motivo da alteração..."></textarea>
+            </div>
+            <div class="modal-actions">
+                <button onclick="salvarEdicao()" class="btn-save">Salvar Alteração</button>
+                <button onclick="fecharModal()" class="btn-cancel">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JS Integrado para garantir funcionamento
+        function abrirModal(id, hora) {
+            document.getElementById('edit_id').value = id;
+            document.getElementById('edit_hora').value = hora;
+            document.getElementById('modalEdicao').style.display = 'block';
+        }
+
+        function fecharModal() {
+            document.getElementById('modalEdicao').style.display = 'none';
+            document.getElementById('edit_justificativa').value = '';
+        }
+
+        function salvarEdicao() {
+            const id = document.getElementById('edit_id').value;
+            const hora = document.getElementById('edit_hora').value;
+            const justificativa = document.getElementById('edit_justificativa').value;
+
+            if (!justificativa) {
+                alert("Por favor, preencha a justificativa!");
+                return;
+            }
+
+            fetch('../includes/processar_edicao.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id, hora, justificativa })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.sucesso) {
+                    location.reload();
+                } else {
+                    alert("Erro ao salvar: " + data.erro);
+                }
+            })
+            .catch(err => alert("Erro na requisição. Verifique o arquivo processar_edicao.php"));
+        }
+    </script>
 </body>
 </html>

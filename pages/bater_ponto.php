@@ -24,7 +24,7 @@ session_start();
         <div class="admin-nav">
             <strong>
                 <?php 
-                    echo $_SESSION['usuario_perfil'] == 1 ? 'Painel Admin' : 'Painel do Funcionário'; 
+                    echo $_SESSION['usuario_perfil'] == 1 ? 'Painel Admin' : 'Painel do Usuário'; 
                 ?>:
             </strong>
             

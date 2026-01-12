@@ -1,6 +1,7 @@
 
 <?php
 session_start();
+date_default_timezone_set('America/Sao_Paulo');
 require_once __DIR__ . '/../config/conexao.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -26,8 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // 3. Lógica de Alternância: Busca a última batida do usuário hoje
             // Note que aqui já usamos o novo nome: tipo_batida
             $sql_ultimo = "SELECT tipo_batida FROM registros_ponto 
-                        WHERE id_usuario = :uid AND data_registro = :data 
-                        ORDER BY id DESC LIMIT 1";
+                            WHERE id_usuario = :uid AND data_registro = :data 
+                            ORDER BY id DESC LIMIT 1";
             $stmt_u = $pdo->prepare($sql_ultimo);
             $stmt_u->execute([':uid' => $usuario['id'], ':data' => $data_hoje]);
             $ultimo_ponto = $stmt_u->fetch();
