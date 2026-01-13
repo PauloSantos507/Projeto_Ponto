@@ -1,0 +1,21 @@
+Problemas encontrados sistema de pontos:
+
+O sistema não está diferenciando datas, no dia 09/01 foram feitos testes, batendo 4 pontos no perfil de admin.
+No dia 12/01, feito o mesmo teste, percebemos que ele está utilizando os pontos já batidos no dia 09/01.
+
+Resolução, foi alterado o código do arquivo "Registro de Pontos", nele, modificamos a forma como eram feitas o calculo de horas
+Além disso, configurei o arquivo de autenticador, para verificar a horá
+
+O que fazer agora:
+Adicionar modificador de pontos. Usuário admin consegue modificar um ponto de outro usuário.
+
+Proximos pontos:
+
+1- Sinalizar alteração e edição de horários. - feito
+2- Incluir campo para mudança de usuários pelo admin - feito
+3- Modificar metodo para bater o ponto. Adicionar mátricula ao invês de bater o ponto com o e-mail.
+Para que seja realizado, devo criar uma coluna dentro do banco de dados, "matricula"
+O sistema vai utilizar o arquivo "Bater_Ponto" utilizando a mátricula juntamente da senha, o login ainda será feito pelo e-mail.
+Também será necessário modificar a tela de edição de usuário, onde poderá ser trocada a matricula
+
+

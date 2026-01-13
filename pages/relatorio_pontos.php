@@ -33,7 +33,7 @@ if ($usuario_id) {
         if ($u['id'] == $usuario_id) $carga_do_usuario = $u['carga_horaria'];
     }
 
-    $sql = "SELECT id, data_registro, hora_registro FROM registros_ponto 
+    $sql = "SELECT id, data_registro, hora_registro, justificativa FROM registros_ponto 
             WHERE id_usuario = :uid AND data_registro BETWEEN :inicio AND :fim 
             ORDER BY data_registro ASC, hora_registro ASC";
     $stmt = $pdo->prepare($sql);
@@ -45,7 +45,11 @@ if ($usuario_id) {
         if (!isset($dados_relatorio[$dia])) {
             $dados_relatorio[$dia] = ['batidas' => [], 'total_segundos' => 0];
         }
-        $dados_relatorio[$dia]['batidas'][] = ['id' => $reg['id'], 'hora' => $reg['hora_registro']];
+        $dados_relatorio[$dia]['batidas'][] = [
+            'id' => $reg['id'], 
+            'hora' => $reg['hora_registro'],
+            'justificativa' => $reg['justificativa']
+        ];
     }
 
     foreach ($dados_relatorio as $dia => &$info) {
@@ -87,6 +91,65 @@ function formatarHoras($segundos) {
         
         .btn-edit-icon { background: none; border: none; cursor: pointer; color: #dc931a; font-size: 16px; margin-left: 5px; transition: 0.2s; }
         .btn-edit-icon:hover { transform: scale(1.2); }
+        
+        /* Estilo para horários editados */
+        .hora-editada { 
+            background: #fff3cd; 
+            color: #856404; 
+            padding: 4px 8px; 
+            border-radius: 4px; 
+            font-weight: bold;
+            display: inline-block;
+            position: relative;
+            cursor: help;
+        }
+        .hora-editada::before {
+            content: '✏️ ';
+            font-size: 12px;
+        }
+        
+        /* Tooltip para justificativa */
+        .tooltip {
+            position: relative;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 280px;
+            background-color: #333;
+            color: #fff;
+            text-align: left;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1000;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -140px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 12px;
+            line-height: 1.4;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #333 transparent transparent transparent;
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        .tooltip-label {
+            font-weight: bold;
+            color: #ffc107;
+            margin-bottom: 5px;
+        }
         
         .positivo { color: #28a745; font-weight: bold; }
         .negativo { color: #d62a07; font-weight: bold; }
@@ -155,9 +218,23 @@ function formatarHoras($segundos) {
                             <td>
                                 <?php if (isset($info['batidas'][$i])): 
                                     $bt = $info['batidas'][$i];
-                                    echo substr($bt['hora'], 0, 5);
+                                    $hora_exibida = substr($bt['hora'], 0, 5);
+                                    $foi_editado = !empty($bt['justificativa']);
+                                    
+                                    if ($foi_editado): ?>
+                                        <span class="tooltip">
+                                            <span class="hora-editada"><?= $hora_exibida ?></span>
+                                            <span class="tooltiptext">
+                                                <div class="tooltip-label">📝 Justificativa da Edição:</div>
+                                                <?= htmlspecialchars($bt['justificativa']) ?>
+                                            </span>
+                                        </span>
+                                    <?php else: ?>
+                                        <span><?= $hora_exibida ?></span>
+                                    <?php endif;
+                                    
                                     if ($is_admin): ?>
-                                        <button class="btn-edit-icon" onclick="abrirModal('<?= $bt['id'] ?>', '<?= substr($bt['hora'],0,5) ?>')">✏️</button>
+                                        <button class="btn-edit-icon" onclick="abrirModal('<?= $bt['id'] ?>', '<?= $hora_exibida ?>')">✏️</button>
                                     <?php endif;
                                 else: echo "---"; endif; ?>
                             </td>
@@ -171,7 +248,7 @@ function formatarHoras($segundos) {
         <?php endif; ?>
     </div>
 
-    <div id="modalEdicao" class="modal-overlay">
+    <div id="modalEdicao" class="modal-overlay">s
         <div class="modal-container">
             <h3>Editar Horário</h3>
             <hr><br>

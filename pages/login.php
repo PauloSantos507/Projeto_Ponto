@@ -231,5 +231,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 Entrar no Sistema
             </button>
         </form>
+        
+        <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e0e0e0;">
+            <p style="font-size: 14px; color: #666;">
+                Ou acesse: 
+                <a href="bater_ponto.php" style="color: #dc931a; text-decoration: none; font-weight: bold;">
+                    Registro de Ponto
+                </a>
+            </p>
+        </div>
 </body>
 </html>

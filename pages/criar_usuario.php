@@ -34,8 +34,12 @@ if (!isset($_SESSION['usuario_perfil']) || $_SESSION['usuario_perfil'] != 1) {
             <label>Nome Completo</label>
             <input type="text" name="nome_usuario" placeholder="Ex: João Silva" required>
 
-            <label>E-mail (Login)</label>
+            <label>E-mail (Login Administrativo)</label>
             <input type="email" name="email_usuario" placeholder="joao@empresa.com" required>
+
+            <label>Matrícula (Para Registro de Ponto)</label>
+            <input type="text" name="matricula_usuario" placeholder="Ex: 2024001" required maxlength="20">
+            <small style="color: #666; font-size: 12px;">Usada para registrar ponto no sistema</small>
 
             <label>Senha Provisória</label>
             <input type="password" name="senha_usuario" required>

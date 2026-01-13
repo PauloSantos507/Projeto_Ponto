@@ -12,6 +12,6 @@ if (isset($_COOKIE[session_name()])) {
 // Destruir a sessão
 session_destroy();
 
-// Redirecionar para a página de login
-header("Location: ../pages/login.php");
+// Redirecionar para a página de bater ponto (que funciona como login também)
+header("Location: ../pages/login.php?mensagem=" . urlencode("Você saiu do sistema com sucesso."));
 exit();

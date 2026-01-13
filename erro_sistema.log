@@ -400,3 +400,15 @@ Stack trace:
 
 [12-Jan-2026 20:18:09 Europe/Berlin] SQL: INSERT INTO usuarios (nome, email, senha, perfil, carga_horaria)
                 VALUES (:nome, :email, :senha, :perfil, :carga)
+[13-Jan-2026 18:29:40 Europe/Berlin] POST RECEBIDO: Array
+(
+    [nome_usuario] => Paulo Teste
+    [email_usuario] => paulo@verteron.com
+    [matricula_usuario] => POST
+    [senha_usuario] => paulo123
+    [perfil_usuario] => 0
+    [carga_horaria] => 6
+)
+
+[13-Jan-2026 18:29:40 Europe/Berlin] SQL: INSERT INTO usuarios (nome, matricula, email, senha, perfil, carga_horaria)
+                VALUES (:nome, :matricula, :email, :senha, :perfil, :carga)

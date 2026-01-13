@@ -29,10 +29,11 @@ session_start();
             </strong>
             
             <?php if ($_SESSION['usuario_perfil'] == 1): ?>
-                <a href="criar_usuario.php">Cadastrar Usuário</a> | 
+                <a href="gerenciar_usuarios.php">Gerenciar Usuários</a> | 
             <?php endif; ?>
             
             <a href="relatorio_pontos.php">Ver Relatórios</a> | 
+            <a href="edita_usuario.php">Meu Perfil</a> | 
             <a href="../includes/encerrar_sessao.php" style="color: #dc931a;">Sair</a>
         </div>
     <?php endif; ?>
@@ -45,12 +46,17 @@ session_start();
 
     <div class="card">
         <h2>Registrar Ponto</h2>
-        <p style="color: #666; font-size: 14px;">Identifique-se para registrar sua batida.</p>
-        <form action="../includes/autenticador.php" method="POST">
-            <input type="email" name="email_login" placeholder="Seu E-mail" required>
-            <input type="password" name="senha_login" placeholder="Sua Senha" required>
-            <button type="submit">Registrar Ponto</button>
+        <p style="color: #666; font-size: 14px;">Digite sua matrícula e senha para registrar sua batida.</p>
+        <form action="../includes/registrar_ponto.php" method="POST">
+            <input type="text" name="matricula_ponto" placeholder="Sua Matrícula" required autocomplete="off">
+            <input type="password" name="senha_ponto" placeholder="Sua Senha" required autocomplete="off">
+            <button type="submit">🕐 Registrar Ponto</button>
         </form>
+        <?php if (isset($_SESSION['usuario_perfil']) && $_SESSION['usuario_perfil'] == 1): ?>
+            <div style="text-align: center; margin-top: 15px; padding-top: 15px; border-top: 1px solid #ddd;">
+                <a href="login.php" style="color: #dc931a; text-decoration: none; font-size: 13px;">🔐 Login Administrativo</a>
+            </div>
+        <?php endif; ?>
     </div>
 
 </body>
