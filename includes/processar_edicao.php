@@ -13,28 +13,26 @@ $input = file_get_contents('php://input');
 $dados = json_decode($input, true);
 
 // 3. VALIDAÇÃO: Verifica se os campos obrigatórios foram enviados
-if (!$dados || empty($dados['id']) || empty($dados['hora']) || empty($dados['justificativa'])) {
-    echo json_encode(['sucesso' => false, 'erro' => 'Dados incompletos ou justificativa ausente.']);
+// NOTA: justificativa é opcional agora (será salva na tabela justificativas separadamente)
+if (!$dados || empty($dados['id']) || empty($dados['hora'])) {
+    echo json_encode(['sucesso' => false, 'erro' => 'Dados incompletos: ID e hora são obrigatórios.']);
     exit();
 }
 
 $id_registro   = $dados['id'];
 $nova_hora     = $dados['hora'];
-$justificativa = $dados['justificativa'];
 
 try {
-    // 4. PERSISTÊNCIA: Atualiza o registro no banco de dados
-    // É fundamental usar Prepared Statements para evitar SQL Injection
+    // 4. PERSISTÊNCIA: Atualiza apenas o horário no banco de dados
+    // A justificativa é salva separadamente na tabela justificativas
     $sql = "UPDATE registros_ponto 
-            SET hora_registro = :hora, 
-                justificativa = :justificativa 
+            SET hora_registro = :hora 
             WHERE id = :id";
             
     $stmt = $pdo->prepare($sql);
     $resultado = $stmt->execute([
-        ':hora'          => $nova_hora,
-        ':justificativa' => $justificativa,
-        ':id'            => $id_registro
+        ':hora' => $nova_hora,
+        ':id'   => $id_registro
     ]);
 
     if ($resultado) {

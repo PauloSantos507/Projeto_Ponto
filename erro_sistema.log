@@ -412,3 +412,18 @@ Stack trace:
 
 [13-Jan-2026 18:29:40 Europe/Berlin] SQL: INSERT INTO usuarios (nome, matricula, email, senha, perfil, carga_horaria)
                 VALUES (:nome, :matricula, :email, :senha, :perfil, :carga)
+[15-Jan-2026 15:13:28 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente in C:\xampp\htdocs\Projeto_Ponto\config\conexao.php:33
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\login.php(8): require_once()
+#1 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\config\conexao.php on line 33
+[15-Jan-2026 15:13:36 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente in C:\xampp\htdocs\Projeto_Ponto\config\conexao.php:33
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\login.php(8): require_once()
+#1 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\config\conexao.php on line 33
+[15-Jan-2026 15:13:41 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente in C:\xampp\htdocs\Projeto_Ponto\config\conexao.php:33
+Stack trace:
+#0 C:\xampp\htdocs\Projeto_Ponto\pages\login.php(8): require_once()
+#1 {main}
+  thrown in C:\xampp\htdocs\Projeto_Ponto\config\conexao.php on line 33

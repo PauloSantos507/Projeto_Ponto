@@ -33,35 +33,71 @@ if ($usuario_id) {
         if ($u['id'] == $usuario_id) $carga_do_usuario = $u['carga_horaria'];
     }
 
-    $sql = "SELECT id, data_registro, hora_registro, justificativa FROM registros_ponto 
+    $sql = "SELECT id, data_registro, hora_registro, tipo_batida FROM registros_ponto 
             WHERE id_usuario = :uid AND data_registro BETWEEN :inicio AND :fim 
             ORDER BY data_registro ASC, hora_registro ASC";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':uid' => $usuario_id, ':inicio' => $data_inicio, ':fim' => $data_fim]);
     $registros = $stmt->fetchAll();
+    
+    // Buscar todas as justificativas da nova tabela
+    $ids_registros = array_column($registros, 'id');
+    $justificativas_map = [];
+    
+    if (!empty($ids_registros)) {
+        $placeholders = implode(',', array_fill(0, count($ids_registros), '?'));
+        $sql_just = "SELECT j.id_ponto, j.texto_justificativa, j.data_hora_criacao, u.nome as admin_nome
+                     FROM justificativas j
+                     LEFT JOIN usuarios u ON j.id_admin = u.id
+                     WHERE j.id_ponto IN ($placeholders)
+                     ORDER BY j.data_hora_criacao ASC";
+        $stmt_just = $pdo->prepare($sql_just);
+        $stmt_just->execute($ids_registros);
+        
+        foreach ($stmt_just->fetchAll() as $just) {
+            if (!isset($justificativas_map[$just['id_ponto']])) {
+                $justificativas_map[$just['id_ponto']] = [];
+            }
+            $justificativas_map[$just['id_ponto']][] = $just;
+        }
+    }
 
     foreach ($registros as $reg) {
         $dia = $reg['data_registro'];
         if (!isset($dados_relatorio[$dia])) {
             $dados_relatorio[$dia] = ['batidas' => [], 'total_segundos' => 0];
         }
+        
+        $tipo_batida = $reg['tipo_batida'] ?? 'entrada';
+        
+        // Buscar justificativas da nova tabela para este registro
+        $justificativas_lista = $justificativas_map[$reg['id']] ?? [];
+        
         $dados_relatorio[$dia]['batidas'][] = [
             'id' => $reg['id'], 
             'hora' => $reg['hora_registro'],
-            'justificativa' => $reg['justificativa']
+            'tipo' => $tipo_batida,
+            'justificativas' => $justificativas_lista // Array de justificativas da nova tabela
         ];
     }
 
     foreach ($dados_relatorio as $dia => &$info) {
         $b = $info['batidas'];
         $segundos_dia = 0;
-        for ($i = 0; $i < count($b); $i += 2) {
-            if (isset($b[$i]) && isset($b[$i+1])) {
-                $segundos_dia += (strtotime($b[$i+1]['hora']) - strtotime($b[$i]['hora']));
+        $entrada_temp = null;
+        
+        foreach ($b as $batida) {
+            if ($batida['tipo'] === 'entrada') {
+                $entrada_temp = strtotime($batida['hora']);
+            } elseif ($batida['tipo'] === 'saida' && $entrada_temp !== null) {
+                $segundos_dia += (strtotime($batida['hora']) - $entrada_temp);
+                $entrada_temp = null;
             }
         }
+        
         $info['total_segundos'] = $segundos_dia;
     }
+    unset($info); // CRÍTICO: Libera a referência para evitar bugs
 }
 
 function formatarHoras($segundos) {
@@ -104,8 +140,8 @@ function formatarHoras($segundos) {
             cursor: help;
         }
         .hora-editada::before {
-            content: '✏️ ';
-            font-size: 12px;
+            content: '❗';
+            font-size: 15px;
         }
         
         /* Tooltip para justificativa */
@@ -211,22 +247,53 @@ function formatarHoras($segundos) {
                     <?php 
                     foreach ($dados_relatorio as $dia => $info): 
                         $saldo = $info['total_segundos'] - ($carga_do_usuario * 3600);
+                        
+                        // Organiza as batidas em slots (entrada1, saída1, entrada2, saída2)
+                        $slots = [null, null, null, null]; // entrada, saída almoço, volta almoço, saída final
+                        $index_entrada = 0;
+                        
+                        foreach ($info['batidas'] as $bt) {
+                            if ($bt['tipo'] === 'entrada') {
+                                if ($index_entrada == 0) {
+                                    $slots[0] = $bt; // Primeira entrada (entrada)
+                                    $index_entrada++;
+                                } else {
+                                    $slots[2] = $bt; // Segunda entrada (volta do almoço)
+                                }
+                            } else { // saida
+                                if ($slots[0] !== null && $slots[1] === null) {
+                                    $slots[1] = $bt; // Primeira saída (saída para almoço)
+                                } else {
+                                    $slots[3] = $bt; // Segunda saída (saída final)
+                                }
+                            }
+                        }
                     ?>
                     <tr>
                         <td><strong><?= date('d/m/Y', strtotime($dia)) ?></strong></td>
                         <?php for ($i = 0; $i < 4; $i++): ?>
                             <td>
-                                <?php if (isset($info['batidas'][$i])): 
-                                    $bt = $info['batidas'][$i];
+                                <?php if ($slots[$i] !== null): 
+                                    $bt = $slots[$i];
                                     $hora_exibida = substr($bt['hora'], 0, 5);
-                                    $foi_editado = !empty($bt['justificativa']);
+                                    $tem_justificativas = !empty($bt['justificativas']);
+                                    $foi_editado = $tem_justificativas;
                                     
                                     if ($foi_editado): ?>
                                         <span class="tooltip">
                                             <span class="hora-editada"><?= $hora_exibida ?></span>
                                             <span class="tooltiptext">
-                                                <div class="tooltip-label">📝 Justificativa da Edição:</div>
-                                                <?= htmlspecialchars($bt['justificativa']) ?>
+                                                <div class="tooltip-label">📝 Histórico de Edições:</div>
+                                                <?php if ($tem_justificativas): ?>
+                                                    <?php foreach ($bt['justificativas'] as $idx => $just): ?>
+                                                        <div style="margin-bottom: 10px; padding-bottom: 10px; <?= $idx < count($bt['justificativas']) - 1 ? 'border-bottom: 1px solid #555;' : '' ?>">
+                                                            <div style="font-size: 11px; color: #aaa; margin-bottom: 3px;">
+                                                                <?= date('d/m/Y H:i', strtotime($just['data_hora_criacao'])) ?> - <?= htmlspecialchars($just['admin_nome']) ?>
+                                                            </div>
+                                                            <div><?= htmlspecialchars($just['texto_justificativa']) ?></div>
+                                                        </div>
+                                                    <?php endforeach; ?>
+                                                <?php endif; ?>
                                             </span>
                                         </span>
                                     <?php else: ?>
@@ -248,7 +315,7 @@ function formatarHoras($segundos) {
         <?php endif; ?>
     </div>
 
-    <div id="modalEdicao" class="modal-overlay">s
+    <div id="modalEdicao" class="modal-overlay">
         <div class="modal-container">
             <h3>Editar Horário</h3>
             <hr><br>
@@ -291,20 +358,41 @@ function formatarHoras($segundos) {
                 return;
             }
 
+            // Criar FormData para enviar ao novo endpoint
+            const formData = new FormData();
+            formData.append('id_ponto', id);
+            formData.append('texto_justificativa', justificativa);
+            
+            // Obter usuario_id da URL para redirecionar corretamente
+            const urlParams = new URLSearchParams(window.location.search);
+            const usuarioId = urlParams.get('usuario_id') || '';
+            formData.append('usuario_id_origem', usuarioId);
+
+            // Primeiro atualiza o horário via processar_edicao.php
             fetch('../includes/processar_edicao.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id, hora, justificativa })
+                body: JSON.stringify({ id, hora, justificativa: '' }) // Remove justificativa antiga
             })
             .then(res => res.json())
             .then(data => {
                 if (data.sucesso) {
-                    location.reload();
+                    // Agora salva a justificativa na nova tabela
+                    return fetch('../includes/processar_justificativa.php', {
+                        method: 'POST',
+                        body: formData
+                    });
                 } else {
-                    alert("Erro ao salvar: " + data.erro);
+                    throw new Error(data.erro || 'Erro ao atualizar horário');
                 }
             })
-            .catch(err => alert("Erro na requisição. Verifique o arquivo processar_edicao.php"));
+            .then(response => {
+                // Recarrega a página após salvar a justificativa
+                location.reload();
+            })
+            .catch(err => {
+                alert("Erro ao salvar: " + err.message);
+            });
         }
     </script>
 </body>
