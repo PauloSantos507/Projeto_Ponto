@@ -66,6 +66,13 @@ session_start();
         const urlParams = new URLSearchParams(window.location.search);
         const mensagem = urlParams.get('mensagem');
         
+        // PROTEÇÃO: Remove a mensagem da URL imediatamente para evitar reprocessamento
+        if (mensagem) {
+            // Limpa a URL sem recarregar a página
+            const cleanUrl = window.location.pathname;
+            window.history.replaceState({}, document.title, cleanUrl);
+        }
+        
         if (mensagem && !mensagem.includes('Erro')) {
             // Oculta o formulário
             document.getElementById('formulario-ponto').classList.add('hidden');

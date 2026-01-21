@@ -1,11 +1,23 @@
 <?php
 session_start();
 date_default_timezone_set('America/Sao_Paulo');
+
+// PROTEÇÃO: Só processa requisições POST
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header("Location: ../pages/bater_ponto.php");
+    exit();
+}
+
+// PROTEÇÃO: Verifica se os dados foram enviados
+if (!isset($_POST['matricula_ponto']) || !isset($_POST['senha_ponto'])) {
+    header("Location: ../pages/bater_ponto.php?mensagem=" . urlencode("Erro: Dados inválidos."));
+    exit();
+}
+
 require_once __DIR__ . '/../config/conexao.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $matricula = trim($_POST['matricula_ponto'] ?? '');
-    $senha = $_POST['senha_ponto'] ?? '';
+$matricula = trim($_POST['matricula_ponto']);
+$senha = $_POST['senha_ponto'];
 
     try {
         // 1. Busca o usuário pela MATRÍCULA
@@ -36,23 +48,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt_ponto = $pdo->prepare($sql_ponto);
             $stmt_ponto->execute([
                 ':uid' => $usuario['id'], 
-                ':data' => $data_hoje, 
-                ':hora' => $hora_agora,
-                ':tipo' => $novo_tipo
-            ]);
+        ':data' => $data_hoje, 
+        ':hora' => $hora_agora,
+        ':tipo' => $novo_tipo
+    ]);
 
-            $msg = "Ponto de " . strtoupper($novo_tipo) . " registrado com sucesso, " . htmlspecialchars($usuario['nome']) . "!";
-        } else {
-            $msg = "Erro: Matrícula ou senha incorretos.";
-        }
-
-        // 5. Retorna para a página de registro de ponto com a mensagem
-        header("Location: ../pages/bater_ponto.php?mensagem=" . urlencode($msg));
-        exit();
-
-    } catch (PDOException $e) {
-        error_log("Erro ao Registrar Ponto: " . $e->getMessage());
-        header("Location: ../pages/bater_ponto.php?mensagem=" . urlencode("Erro interno no servidor."));
-        exit();
-    }
+    $msg = "Ponto de " . strtoupper($novo_tipo) . " registrado com sucesso, " . htmlspecialchars($usuario['nome']) . "!";
+} else {
+    $msg = "Erro: Matrícula ou senha incorretos.";
 }
+
+// 5. Retorna para a página de registro de ponto com a mensagem
+header("Location: ../pages/bater_ponto.php?mensagem=" . urlencode($msg));
+exit();
+
+} catch (PDOException $e) {
+    error_log("Erro ao Registrar Ponto: " . $e->getMessage());
+    header("Location: ../pages/bater_ponto.php?mensagem=" . urlencode("Erro interno no servidor."));
+    exit();
+}
+?>
