@@ -121,6 +121,13 @@ function formatarHoras($segundos) {
         select, input { padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
         .btn-filtrar { background: #ca521f; color: white; border: none; padding: 9px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; }
         
+        /* Botões de Exportação */
+        .export-buttons { margin: 20px 0; display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn-export { background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-export:hover { background: #218838; }
+        .btn-export-all { background: #007bff; }
+        .btn-export-all:hover { background: #0056b3; }
+        
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th { background: #868788; color: white; padding: 12px; font-size: 14px; }
         td { border-bottom: 1px solid #eee; padding: 12px; text-align: center; font-size: 14px; }
@@ -231,6 +238,27 @@ function formatarHoras($segundos) {
         </form>
 
         <?php if ($usuario_id): ?>
+            <!-- Botões de Exportação -->
+            <div class="export-buttons">
+                <form method="POST" action="../includes/exportar_relatorio.php" style="display: inline;">
+                    <input type="hidden" name="usuario_id" value="<?= $usuario_id ?>">
+                    <input type="hidden" name="data_inicio" value="<?= $data_inicio ?>">
+                    <input type="hidden" name="data_fim" value="<?= $data_fim ?>">
+                    <button type="submit" name="exportar_tipo" value="usuario" class="btn-export">
+                        📥 Exportar Relatório <?= $is_admin ? 'do Usuário' : 'Meu Relatório' ?>
+                    </button>
+                </form>
+                
+                <?php if ($is_admin): ?>
+                    <form method="POST" action="../includes/exportar_relatorio.php" style="display: inline;">
+                        <input type="hidden" name="data_inicio" value="<?= $data_inicio ?>">
+                        <input type="hidden" name="data_fim" value="<?= $data_fim ?>">
+                        <button type="submit" name="exportar_tipo" value="todos" class="btn-export btn-export-all">
+                            📦 Exportar Relatório de TODOS os Usuários
+                        </button>
+                    </form>
+                <?php endif; ?>
+            </div>
             <table>
                 <thead>
                     <tr>
