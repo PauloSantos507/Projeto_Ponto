@@ -81,6 +81,17 @@ if ($usuario_id) {
         ];
     }
 
+    // Calcular número máximo de batidas em um dia (para criar colunas dinâmicas)
+    $max_batidas = 0;
+    foreach ($dados_relatorio as $dia => $info) {
+        $num_batidas = count($info['batidas']);
+        if ($num_batidas > $max_batidas) {
+            $max_batidas = $num_batidas;
+        }
+    }
+    // Garantir no mínimo 4 colunas (padrão: entrada, saída almoço, volta, saída final)
+    if ($max_batidas < 4) $max_batidas = 4;
+
     foreach ($dados_relatorio as $dia => &$info) {
         $b = $info['batidas'];
         $segundos_dia = 0;
@@ -263,10 +274,22 @@ function formatarHoras($segundos) {
                 <thead>
                     <tr>
                         <th>Data</th>
-                        <th>Entrada</th>
-                        <th>Saída Almoço</th>
-                        <th>Volta Almoço</th>
-                        <th>Saída Final</th>
+                        <?php 
+                        // Gerar cabeçalhos dinâmicos baseado no número de batidas
+                        $nomes_padrao = ['Entrada', 'Saída', 'Entrada', 'Saída'];
+                        for ($i = 0; $i < $max_batidas; $i++): 
+                            if ($i < 4) {
+                                echo '<th>' . $nomes_padrao[$i] . '</th>';
+                            } else {
+                                // Após a 4ª, alterna entre Entrada/Saída
+                                //$numero = floor($i / 2) + 1;
+                                //$numero = floor($i / 2) + 1;
+                                // Caso queira numerar as batidas extras, descomente a linha acima e adicione o variavel $numero abaixo
+                                $tipo = ($i % 2 == 0) ? 'Entrada ': 'Saída ';
+                                echo '<th>' . $tipo . '</th>';
+                            }
+                        endfor; 
+                        ?>
                         <th>Trabalhadas</th>
                         <th>Saldo</th>
                     </tr>
@@ -276,33 +299,24 @@ function formatarHoras($segundos) {
                     foreach ($dados_relatorio as $dia => $info): 
                         $saldo = $info['total_segundos'] - ($carga_do_usuario * 3600);
                         
-                        // Organiza as batidas em slots (entrada1, saída1, entrada2, saída2)
-                        $slots = [null, null, null, null]; // entrada, saída almoço, volta almoço, saída final
-                        $index_entrada = 0;
-                        
+                        // Organiza as batidas em ordem cronológica (já vêm ordenadas do banco)
+                        // Cria array com todas as batidas na sequência
+                        $batidas_ordenadas = [];
                         foreach ($info['batidas'] as $bt) {
-                            if ($bt['tipo'] === 'entrada') {
-                                if ($index_entrada == 0) {
-                                    $slots[0] = $bt; // Primeira entrada (entrada)
-                                    $index_entrada++;
-                                } else {
-                                    $slots[2] = $bt; // Segunda entrada (volta do almoço)
-                                }
-                            } else { // saida
-                                if ($slots[0] !== null && $slots[1] === null) {
-                                    $slots[1] = $bt; // Primeira saída (saída para almoço)
-                                } else {
-                                    $slots[3] = $bt; // Segunda saída (saída final)
-                                }
-                            }
+                            $batidas_ordenadas[] = $bt;
+                        }
+                        
+                        // Preencher com null para completar as colunas vazias
+                        while (count($batidas_ordenadas) < $max_batidas) {
+                            $batidas_ordenadas[] = null;
                         }
                     ?>
                     <tr>
                         <td><strong><?= date('d/m/Y', strtotime($dia)) ?></strong></td>
-                        <?php for ($i = 0; $i < 4; $i++): ?>
+                        <?php for ($i = 0; $i < $max_batidas; $i++): ?>
                             <td>
-                                <?php if ($slots[$i] !== null): 
-                                    $bt = $slots[$i];
+                                <?php if ($batidas_ordenadas[$i] !== null): 
+                                    $bt = $batidas_ordenadas[$i];
                                     $hora_exibida = substr($bt['hora'], 0, 5);
                                     $tem_justificativas = !empty($bt['justificativas']);
                                     $foi_editado = $tem_justificativas;

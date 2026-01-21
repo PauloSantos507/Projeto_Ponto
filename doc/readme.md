@@ -2,12 +2,12 @@
 
 ### 1. Visão Geral 
 
-Este sistema foi progetado para gerenciar o registro de jornada de trabalho dos colaboradores, permitindo controle de entradas, saídas, alteração de pontos e justificativas. O foco é na integridade de dados, utilizando uma estrutura segura, que permite justificativas acumulativas que impede a perda de histórico.
+Este sistema foi projetado para gerenciar o registro de jornada de trabalho dos colaboradores, permitindo controle de entradas, saídas, alteração de pontos e justificativas. O foco é na integridade de dados, utilizando uma estrutura segura, que permite justificativas acumulativas que impede a perda de histórico.
 
 ### 2. Requisitos de Ambiente
 
 - Linguagem: PHP (Versão 7.4 ou superior)
-- Banco de Dados: Mysql / MariaDb
+- Banco de Dados: MySQL / MariaDb
 - Extensões PHP: PDO, PDO_MYSQL
 
 ### 3. Arquitetura de Dados
@@ -129,7 +129,7 @@ O relatório de pontos é gerado com base nos registros armazenados, considerand
 
 - **Gestão de Saldo:** O total de horas trabalhadas é subtraído da carga horária diária cadastrada para o usuário (ex: 8 horas), resultando em saldo positivo (extra) ou negativo (atraso/falta).
 
-#### 4.3. Justitificativas e Auditoria
+#### 4.3. Justificativas e Auditoria
 
 O sistema de justificativas é uma funcionalidade crítica para manter a integridade dos registros de ponto. Para que um ponto seja alterado/editado, o administrador deve inserir uma justificativa.
 
@@ -151,13 +151,13 @@ O arquivo conexao.php estabelece a conexão com o banco de dados utilizando PDO,
     $pass = '';
     $charset = 'utf8mb4';
 ```
-O arquivo utiliza um bloco try-catch para caputrar possíveis erros de conexão e exibir em log.
+O arquivo utiliza um bloco try-catch para capturar possíveis erros de conexão e exibir em log.
 
 #### 5.2. Login e Autenticação (pageslogin.php)
 
 O usuário acessa a página de Login, onde insere suas credenciais (e-mail e senha). O sistema valida as informações contra a tabela de usuário e inicia uma sessão segura, mantendo o estado de autenticação do usuário.
 
-O usuário é direcionado para a página principal, onde pode registar ponto, visualizar relatórios e, se for administrados, gerenciar usuários e editar pontos.
+O usuário é direcionado para a página principal, onde pode registar ponto, visualizar relatórios e, se for Administrador, gerenciar usuários e editar pontos.
 
 #### 5.3. Registro de Ponto (pages/registrar_ponto.php)
 
@@ -165,10 +165,10 @@ O usuário é direcionado para a página principal, onde pode registar ponto, vi
 - **Processamento(Back):** 
   1. O sistema valida a matrícula e senha (criptografada com `password_hash`);
   2. Verifica a última batida registrada na tabela, se o último registro for "entrada", o próximo será "saída" e vice-versa;
-  3. Insere o novo registro na tabela registros_ponto com data, hora e tipo de batida.
+  3. Insere o novo registro na tabela registros_ponto com data, hora e tipo de batida. Através de um comando `date_default_timezone_set('America/Sao_Paulo')` para garantir o fuso horário correto.
   4. Prevenção de erros: O sistema oculta os campos de entrada de dados, e exibe uma tela, com um cronometro regressivo, para evitar múltiplos cliques acidentais.
 
-#### 5.4. Relaório de Pontos (pages/relatorio.php)
+#### 5.4. Relatório de Pontos (pages/relatorio.php)
 - **Interface:** O usuário administrador possúi privilegios para filtrar por outros funcionários, filtrando por data inicial e final. Dessa forma um relatório completo dos pontos registrados é exibido.
 - **Processamento(Back):**
   1. O sistema consulta a tabela registros_ponto para obter todos os registros do usuário no período selecionado;
@@ -215,13 +215,15 @@ O usuário é direcionado para a página principal, onde pode registar ponto, vi
 ![Salvar_Alteração](/Imagens/Edicao_salva.png)
 10. A alteração será salva, e a justificativa será registrada no sistema. As justificativas pode ser visualizada ao passar o mouse por cima do ponto que estará evidenciado em amarelo.
 ![Justificativa_Pontos](/Imagens/Mostrar_justificativa.png)
+11. Para exportar o relatório, clique no botão "Exportar Relatório do Usuário" para gerar um arquivo CSV do usuário selecionado, ou "Exportar Relatório de TODOS os Usuários" para gerar um arquivo CSV consolidado (somente para administradores).
+![Exportar_Relatório](/Imagens/Exportar_relatorio.png)
 
 #### 6.2. Passo a Passo para Gerenciamento e Criação de Usuários pelo Administrados:
 1. Acesse a página de Login.
 2. Preencha suas credenciais de administrador e faça login.
 3. No menu superior, clique na opção "Gerenciar Usuários".
 ![Gerenciar_Usuários](/Imagens/Gerenciar_usuarios.png)
-4. Na nova tela, será possível visualizar todos os usuários, assim como susas informações (ID, Nome, E-mail, Matrícula, Perfil e Carga Horária).
+4. Na nova tela, será possível visualizar todos os usuários, assim como suas informações (ID, Nome, E-mail, Matrícula, Perfil e Carga Horária).
 5. Para criar um novo usuário, clique no botão "Cadastrar Novo Usuário".
 ![Cadastrar_Novo_Usuário](/Imagens/Tela_usuarios.png)
 6. Preencha os dados solicitados para a criação e clique em "Finalizar Cadastro".

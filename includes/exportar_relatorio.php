@@ -148,6 +148,14 @@ if ($exportar_tipo === 'usuario') {
     
     $output = fopen('php://output', 'w');
     
+    // Calcular número máximo de batidas no período
+    $max_batidas = 0;
+    foreach ($dados_relatorio as $info) {
+        $num = count($info['batidas']);
+        if ($num > $max_batidas) $max_batidas = $num;
+    }
+    if ($max_batidas < 4) $max_batidas = 4; // Mínimo 4 colunas
+    
     // Adicionar BOM UTF-8 para Excel reconhecer acentos
     fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
     
@@ -159,31 +167,33 @@ if ($exportar_tipo === 'usuario') {
     fputcsv($output, ['Gerado em: ' . date('d/m/Y H:i:s')], ';');
     fputcsv($output, [], ';');
     
-    // Cabeçalho da tabela
-    fputcsv($output, ['Data', 'Entrada', 'Saída Almoço', 'Volta Almoço', 'Saída Final', 'Horas Trabalhadas', 'Saldo', 'Observações'], ';');
+    // Cabeçalho da tabela dinâmico
+    $header = ['Data'];
+    $nomes_padrao = ['Entrada', 'Saída', 'Entrada', 'Saída'];
+    for ($i = 0; $i < $max_batidas; $i++) {
+        if ($i < 4) {
+            $header[] = $nomes_padrao[$i];
+        } else {
+            //$numero = floor($i / 2) + 1;
+            // Caso queira numerar as batidas extras, descomente a linha acima e adicione o variavel $numero abaixo
+            $tipo = ($i % 2 == 0) ? 'Entrada ' : 'Saída ';
+            $header[] = $tipo;
+        }
+    }
+    $header[] = 'Horas Trabalhadas';
+    $header[] = 'Saldo';
+    $header[] = 'Observações';
+    fputcsv($output, $header, ';');
     
     $total_segundos_periodo = 0;
     
     foreach ($dados_relatorio as $dia => $info) {
-        $slots = [null, null, null, null];
-        $index_entrada = 0;
+        // Organizar batidas em ordem cronológica
+        $batidas_ordenadas = [];
         $observacoes = [];
         
         foreach ($info['batidas'] as $bt) {
-            if ($bt['tipo'] === 'entrada') {
-                if ($index_entrada == 0) {
-                    $slots[0] = $bt;
-                    $index_entrada++;
-                } else {
-                    $slots[2] = $bt;
-                }
-            } else {
-                if ($slots[0] !== null && $slots[1] === null) {
-                    $slots[1] = $bt;
-                } else {
-                    $slots[3] = $bt;
-                }
-            }
+            $batidas_ordenadas[] = $bt;
             
             // Verificar se tem justificativa
             if (!empty($bt['justificativas'])) {
@@ -196,16 +206,23 @@ if ($exportar_tipo === 'usuario') {
         $saldo = $info['total_segundos'] - ($usuario['carga_horaria'] * 3600);
         $total_segundos_periodo += $saldo;
         
-        fputcsv($output, [
-            date('d/m/Y', strtotime($dia)),
-            $slots[0] ? substr($slots[0]['hora'], 0, 5) : '---',
-            $slots[1] ? substr($slots[1]['hora'], 0, 5) : '---',
-            $slots[2] ? substr($slots[2]['hora'], 0, 5) : '---',
-            $slots[3] ? substr($slots[3]['hora'], 0, 5) : '---',
-            formatarHoras($info['total_segundos']),
-            formatarHoras($saldo),
-            implode(' | ', $observacoes)
-        ], ';');
+        // Construir linha do CSV
+        $row = [date('d/m/Y', strtotime($dia))];
+        
+        // Adicionar todas as batidas
+        for ($i = 0; $i < $max_batidas; $i++) {
+            if (isset($batidas_ordenadas[$i])) {
+                $row[] = substr($batidas_ordenadas[$i]['hora'], 0, 5);
+            } else {
+                $row[] = '---';
+            }
+        }
+        
+        $row[] = formatarHoras($info['total_segundos']);
+        $row[] = formatarHoras($saldo);
+        $row[] = implode(' | ', $observacoes);
+        
+        fputcsv($output, $row, ';');
     }
     
     // Total do período
@@ -247,37 +264,46 @@ if ($exportar_tipo === 'usuario') {
         
         $dados_relatorio = $resultado['dados'];
         
+        // Calcular número máximo de batidas para este usuário
+        $max_batidas = 0;
+        foreach ($dados_relatorio as $info) {
+            $num = count($info['batidas']);
+            if ($num > $max_batidas) $max_batidas = $num;
+        }
+        if ($max_batidas < 4) $max_batidas = 4;
+        
         // Cabeçalho do usuário
         fputcsv($output, ['═══════════════════════════════════════════════════════════'], ';');
         fputcsv($output, ['FUNCIONÁRIO: ' . mb_strtoupper($usuario['nome'])], ';');
         fputcsv($output, ['Matrícula: ' . $usuario['matricula'] . ' | Carga Horária: ' . $usuario['carga_horaria'] . 'h'], ';');
         fputcsv($output, [], ';');
         
-        // Cabeçalho da tabela
-        fputcsv($output, ['Data', 'Entrada', 'Saída Almoço', 'Volta Almoço', 'Saída Final', 'Horas Trabalhadas', 'Saldo', 'Observações'], ';');
+        // Cabeçalho da tabela dinâmico
+        $header = ['Data'];
+        $nomes_padrao = ['Entrada', 'Saída Almoço', 'Volta Almoço', 'Saída Final'];
+        for ($i = 0; $i < $max_batidas; $i++) {
+            if ($i < 4) {
+                $header[] = $nomes_padrao[$i];
+            } else {
+                $numero = floor($i / 2) + 1;
+                $tipo = ($i % 2 == 0) ? 'Entrada ' . $numero : 'Saída ' . $numero;
+                $header[] = $tipo;
+            }
+        }
+        $header[] = 'Horas Trabalhadas';
+        $header[] = 'Saldo';
+        $header[] = 'Observações';
+        fputcsv($output, $header, ';');
         
         $total_segundos_periodo = 0;
         
         foreach ($dados_relatorio as $dia => $info) {
-            $slots = [null, null, null, null];
-            $index_entrada = 0;
+            // Organizar batidas em ordem cronológica
+            $batidas_ordenadas = [];
             $observacoes = [];
             
             foreach ($info['batidas'] as $bt) {
-                if ($bt['tipo'] === 'entrada') {
-                    if ($index_entrada == 0) {
-                        $slots[0] = $bt;
-                        $index_entrada++;
-                    } else {
-                        $slots[2] = $bt;
-                    }
-                } else {
-                    if ($slots[0] !== null && $slots[1] === null) {
-                        $slots[1] = $bt;
-                    } else {
-                        $slots[3] = $bt;
-                    }
-                }
+                $batidas_ordenadas[] = $bt;
                 
                 if (!empty($bt['justificativas'])) {
                     foreach ($bt['justificativas'] as $just) {
@@ -289,16 +315,23 @@ if ($exportar_tipo === 'usuario') {
             $saldo = $info['total_segundos'] - ($usuario['carga_horaria'] * 3600);
             $total_segundos_periodo += $saldo;
             
-            fputcsv($output, [
-                date('d/m/Y', strtotime($dia)),
-                $slots[0] ? substr($slots[0]['hora'], 0, 5) : '---',
-                $slots[1] ? substr($slots[1]['hora'], 0, 5) : '---',
-                $slots[2] ? substr($slots[2]['hora'], 0, 5) : '---',
-                $slots[3] ? substr($slots[3]['hora'], 0, 5) : '---',
-                formatarHoras($info['total_segundos']),
-                formatarHoras($saldo),
-                implode(' | ', $observacoes)
-            ], ';');
+            // Construir linha do CSV
+            $row = [date('d/m/Y', strtotime($dia))];
+            
+            // Adicionar todas as batidas
+            for ($i = 0; $i < $max_batidas; $i++) {
+                if (isset($batidas_ordenadas[$i])) {
+                    $row[] = substr($batidas_ordenadas[$i]['hora'], 0, 5);
+                } else {
+                    $row[] = '---';
+                }
+            }
+            
+            $row[] = formatarHoras($info['total_segundos']);
+            $row[] = formatarHoras($saldo);
+            $row[] = implode(' | ', $observacoes);
+            
+            fputcsv($output, $row, ';');
         }
         
         fputcsv($output, [], ';');
