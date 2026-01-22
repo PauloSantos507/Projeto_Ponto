@@ -80,6 +80,29 @@ CREATE TABLE `registros_ponto` (
 - Edição Direta: O campo justificativa nesta tabela armazena o motivo de uma alteração direta no horário feita pelo administrador.
 
 
+#### Para a criação da Tabela **"justificativas_padrao"**:
+``` sql 
+CREATE TABLE `justificativas_padrao` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `descricao` VARCHAR(255) NOT NULL,
+  `ativa` BOOLEAN DEFAULT 1,
+  `ordem` INT DEFAULT 0,
+  `criado_em` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+#### Inserir Justificativas Padrão Iniciais:
+``` sql
+INSERT INTO justificativas_padrao (descricao, ordem, ativa) VALUES 
+    ('Atestado médico', 1, 1),
+    ('Consulta médica', 2, 1),
+    ('Compromisso pessoal', 3, 1),
+    ('Problema de transporte', 4, 1),
+    ('Falta de energia/internet', 5, 1),
+    ('Esquecimento', 6, 1),
+    ('Reunião externa', 7, 1);
+```
+
 #### Para a criação da Tabela **"justificativas"**: 
 
 ``` sql 
@@ -88,12 +111,14 @@ CREATE TABLE `justificativas` (
   `id_ponto` int(11) NOT NULL,
   `id_admin` int(11) NOT NULL,
   `texto_justificativa` text NOT NULL,
+  `id_justificativa_padrao` INT NULL,
   `data_hora_criacao` datetime DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `id_ponto` (`id_ponto`),
   KEY `id_admin` (`id_admin`),
   CONSTRAINT `justificativas_ibfk_1` FOREIGN KEY (`id_ponto`) REFERENCES `registros_ponto` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `justificativas_ibfk_2` FOREIGN KEY (`id_admin`) REFERENCES `usuarios` (`id`)
+  CONSTRAINT `justificativas_ibfk_2` FOREIGN KEY (`id_admin`) REFERENCES `usuarios` (`id`),
+  CONSTRAINT `fk_just_padrao` FOREIGN KEY (`id_justificativa_padrao`) REFERENCES `justificativas_padrao` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
 
@@ -111,9 +136,13 @@ Esta seçao detalha o ciclo de vida dos dados dentro do sistema de pontos e a in
 
 O fluxo de registro é projetado para ser intuitivo, minimizando erros de entrada por parte do colaborador.
 
-- **Entrada de Dados:** O usuário acessa a interface de registro e informa seu e-mail e senha para acessar o sistema:
+- **Justificativas Padrão:** A tabela `justificativas_padrao` armazena justificativas pré-definidas (ex: "Atestado médico", "Consulta médica") que podem ser selecionadas rapidamente pelo administrador. O campo `ativa` permite ativar/desativar opções sem perder o histórico, e o campo `ordem` controla a sequência de exibição.
 
-- **Identificação:** Internamente, o sistema vincula o acesso à matrícula única do funcionário.
+- **Justificativas Registradas:** A tabela `justificativas` permite "N" comentários para um único ponto, impedindo que uma explicação sobrescreva a outra. Cada justificativa pode ser:
+  - **Padrão:** Quando `id_justificativa_padrao` contém um ID válido (referência à tabela `justificativas_padrao`)
+  - **Personalizada:** Quando `id_justificativa_padrao` é NULL, indicando que o texto foi digitado livremente
+
+- **Responsabilidade de Auditoria:** O vínculo com `id_admin` registra quem foi o responsável por cada nota inserida, garantindo transparência total nos ajustes de folha de ponto. O campo `texto_justificativa` sempre armazena o texto completo (seja copiado da justificativa padrão ou digitado manualmente) para preservar o histórico mesmo se a justificativa padrão for alterada posteriormente
 
 - **Lógica de Registro:** O sistema realiza uma consulta ao banco de dados para verificar o último registro do colaborador no dia atual. Se o último registro for "entrada", o próximo será automaticamente "saída", e vice-versa.
 
@@ -249,4 +278,4 @@ Este sistema de registro de pontos foi desenvolvido com foco na segurança, inte
 
 
 
-
+s

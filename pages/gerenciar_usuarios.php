@@ -148,10 +148,18 @@ $usuarios = $stmt->fetchAll();
             <h1>👥 Gerenciar Usuários</h1>
             <p style="color: #666; font-size: 14px;">Visualize, edite e gerencie todos os usuários do sistema.</p>
             
-            <?php if (isset($_GET['mensagem'])): ?>
-                <div class="mensagem <?= isset($_GET['tipo']) && $_GET['tipo'] == 'erro' ? 'erro' : 'sucesso' ?>">
-                    <?= htmlspecialchars($_GET['mensagem']) ?>
+            <?php if (isset($_SESSION['mensagem_sucesso'])): ?>
+                <div class="mensagem sucesso">
+                    <?= htmlspecialchars($_SESSION['mensagem_sucesso']) ?>
                 </div>
+                <?php unset($_SESSION['mensagem_sucesso']); ?>
+            <?php endif; ?>
+            
+            <?php if (isset($_SESSION['mensagem_erro'])): ?>
+                <div class="mensagem erro">
+                    <?= htmlspecialchars($_SESSION['mensagem_erro']) ?>
+                </div>
+                <?php unset($_SESSION['mensagem_erro']); ?>
             <?php endif; ?>
             
             <div class="actions-bar">

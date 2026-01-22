@@ -1,4 +1,6 @@
 <?php
+session_start(); // Iniciar sessão para usar mensagens seguras
+
 ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 ini_set('error_log', __DIR__ . '/erro.log');
@@ -34,18 +36,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $stmt->execute();
 
-        echo "Usuário cadastrado com sucesso! <br><a href='../pages/bater_ponto.php'>Voltar para o Início</a>";
+        // Armazena mensagem na sessão (seguro contra manipulação)
+        $_SESSION['mensagem_sucesso'] = "Usuário cadastrado com sucesso!";
+        header("Location: ../pages/gerenciar_usuarios.php");
+        exit();
 
     } catch (PDOException $e) {
         error_log("ERRO PDO: " . $e->getMessage());
-        echo "Erro ao cadastrar usuário. Verifique o log.";
         
-    }
-    catch (PDOException $e) {
-    // Grava uma mensagem personalizada no arquivo erro.log
-    error_log("Erro no banco de dados: " . $e->getMessage());
-    
-    // Exibe uma mensagem amigável para o usuário
-    echo "Ocorreu um erro interno. Por favor, tente novamente mais tarde.";
+        // Armazena mensagem de erro na sessão
+        $_SESSION['mensagem_erro'] = "Erro ao cadastrar usuário. Verifique os dados e tente novamente.";
+        header("Location: ../pages/criar_usuario.php");
+        exit();
     }
 }

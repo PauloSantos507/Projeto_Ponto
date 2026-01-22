@@ -427,3 +427,39 @@ Stack trace:
 #0 C:\xampp\htdocs\Projeto_Ponto\pages\login.php(8): require_once()
 #1 {main}
   thrown in C:\xampp\htdocs\Projeto_Ponto\config\conexao.php on line 33
+[22-Jan-2026 18:34:35 Europe/Berlin] POST RECEBIDO: Array
+(
+    [nome_usuario] => Maria
+    [email_usuario] => maria@gmail.com
+    [matricula_usuario] => MARIA
+    [senha_usuario] => maria123
+    [perfil_usuario] => 0
+    [carga_horaria] => 8
+)
+
+[22-Jan-2026 18:34:35 Europe/Berlin] SQL: INSERT INTO usuarios (nome, matricula, email, senha, perfil, carga_horaria)
+                VALUES (:nome, :matricula, :email, :senha, :perfil, :carga)
+[22-Jan-2026 18:37:31 Europe/Berlin] POST RECEBIDO: Array
+(
+    [nome_usuario] => Joao
+    [email_usuario] => joao@gmail.com
+    [matricula_usuario] => JOAO
+    [senha_usuario] => joao123
+    [perfil_usuario] => 0
+    [carga_horaria] => 8
+)
+
+[22-Jan-2026 18:37:31 Europe/Berlin] SQL: INSERT INTO usuarios (nome, matricula, email, senha, perfil, carga_horaria)
+                VALUES (:nome, :matricula, :email, :senha, :perfil, :carga)
+[22-Jan-2026 18:40:56 Europe/Berlin] POST RECEBIDO: Array
+(
+    [nome_usuario] => Pedro
+    [email_usuario] => pedro@verteron.com
+    [matricula_usuario] => PEDRO
+    [senha_usuario] => pedro123
+    [perfil_usuario] => 0
+    [carga_horaria] => 8
+)
+
+[22-Jan-2026 18:40:56 Europe/Berlin] SQL: INSERT INTO usuarios (nome, matricula, email, senha, perfil, carga_horaria)
+                VALUES (:nome, :matricula, :email, :senha, :perfil, :carga)

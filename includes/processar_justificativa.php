@@ -9,19 +9,64 @@ if(!isset($_SESSION['usuario_perfil']) || $_SESSION['usuario_perfil'] != 1) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_ponto = $_POST['id_ponto'] ?? null;
-    $texto = $_POST['texto_justificativa'] ?? '';
     $id_admin = $_SESSION['usuario_id']; // O admin logado que está justificando
-
-    if (!empty($texto) && !empty($id_ponto)) {
+    
+    // Receber justificativa padrão OU personalizada
+    $id_just_padrao = filter_var($_POST['id_justificativa_padrao'] ?? null, FILTER_VALIDATE_INT);
+    $texto_personalizado = trim($_POST['texto_personalizado'] ?? '');
+    
+    // Variáveis finais para inserção
+    $texto_final = '';
+    $id_padrao_final = null;
+    
+    // Determinar qual tipo de justificativa foi enviada
+    if ($id_just_padrao !== false && $id_just_padrao > 0) {
+        // JUSTIFICATIVA PADRÃO - buscar descrição da tabela
         try {
-            // Insere com data_hora_criacao automática
-            $sql = "INSERT INTO justificativas (id_ponto, id_admin, texto_justificativa, data_hora_criacao) 
-                    VALUES (:ponto, :admin, :texto, NOW())";
+            $stmt_busca = $pdo->prepare("SELECT descricao FROM justificativas_padrao WHERE id = :id AND ativa = 1");
+            $stmt_busca->execute([':id' => $id_just_padrao]);
+            $descricao = $stmt_busca->fetchColumn();
+            
+            if (!$descricao) {
+                die("Justificativa padrão inválida ou inativa.");
+            }
+            
+            $texto_final = $descricao;
+            $id_padrao_final = $id_just_padrao;
+            
+        } catch (PDOException $e) {
+            error_log("Erro ao buscar justificativa padrão: " . $e->getMessage());
+            die("Erro ao buscar justificativa padrão.");
+        }
+        
+    } else if (!empty($texto_personalizado)) {
+        // JUSTIFICATIVA PERSONALIZADA
+        if (strlen($texto_personalizado) < 10) {
+            die("A justificativa personalizada deve ter pelo menos 10 caracteres.");
+        }
+        if (strlen($texto_personalizado) > 500) {
+            die("A justificativa personalizada não pode ter mais de 500 caracteres.");
+        }
+        
+        $texto_final = $texto_personalizado;
+        $id_padrao_final = null; // NULL indica que é personalizada
+        
+    } else {
+        die("Nenhuma justificativa fornecida. Selecione uma justificativa padrão ou descreva um motivo personalizado.");
+    }
+
+    // Inserir no banco de dados
+    if (!empty($texto_final) && !empty($id_ponto)) {
+        try {
+            // Insere com id_justificativa_padrao (NULL para personalizadas)
+            $sql = "INSERT INTO justificativas (id_ponto, id_admin, texto_justificativa, id_justificativa_padrao, data_hora_criacao) 
+                    VALUES (:ponto, :admin, :texto, :id_padrao, NOW())";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([
                 ':ponto' => $id_ponto,
                 ':admin' => $id_admin,
-                ':texto' => $texto
+                ':texto' => $texto_final,
+                ':id_padrao' => $id_padrao_final
             ]);
 
             // Redireciona de volta ao relatório mantendo os filtros
