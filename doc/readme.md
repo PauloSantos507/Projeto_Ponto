@@ -240,11 +240,13 @@ O usuário é direcionado para a página principal, onde pode registar ponto, vi
 ![Relatório_Pontos](/Imagens/Relatorio_pontos.png)
 8. Se você for um administrador, poderá filtrar o usuário e editar pontos clicando no ícone de lápis ao lado do ponto desejado.
 ![Edição_Pontos](/Imagens/Editar_ponto.png)
-9. Insira o novo horário, a justificativa e clique em "Salvar Alteração".
-![Salvar_Alteração](/Imagens/Edicao_salva.png)
-10. A alteração será salva, e a justificativa será registrada no sistema. As justificativas pode ser visualizada ao passar o mouse por cima do ponto que estará evidenciado em amarelo.
+9. Insira o novo horário, selecione uma justifiativa padrão que se encaixe com o motivo da edição e clique em "Salvar Alteração".
+![Salvar_Alteração](/Imagens/Mostrar_justificativa1.png)
+10. Para adicionar uma justificativa por outro motivo, basta clicar em "Outro Motivo", digitar a jutificativa e clicar em "Salvar Alteração".
+![Salvar_Justificativa_Outro_Motivo](/Imagens/Mostrar_outra_justificativa.png)
+11 A alteração será salva, e a justificativa será registrada no sistema. As justificativas pode ser visualizada ao passar o mouse por cima do ponto que estará evidenciado em amarelo.
 ![Justificativa_Pontos](/Imagens/Mostrar_justificativa.png)
-11. Para exportar o relatório, clique no botão "Exportar Relatório do Usuário" para gerar um arquivo CSV do usuário selecionado, ou "Exportar Relatório de TODOS os Usuários" para gerar um arquivo CSV consolidado (somente para administradores).
+12. Para exportar o relatório, clique no botão "Exportar Relatório do Usuário" para gerar um arquivo CSV do usuário selecionado, ou "Exportar Relatório de TODOS os Usuários" para gerar um arquivo CSV consolidado (somente para administradores).
 ![Exportar_Relatório](/Imagens/Exportar_relatorio.png)
 
 #### 6.2. Passo a Passo para Gerenciamento e Criação de Usuários pelo Administrados:
@@ -266,16 +268,3 @@ O usuário é direcionado para a página principal, onde pode registar ponto, vi
 ### 7. Considerações Finais
 
 Este sistema de registro de pontos foi desenvolvido com foco na segurança, integridade dos dados e facilidade de uso. A estrutura de banco de dados foi cuidadosamente projetada para permitir rastreabilidade completa das alterações, garantindo que todas as justificativas sejam armazenadas de forma acumulativa. A interface do usuário é intuitiva, facilitando o registro de pontos e a gestão administrativa. Com essas funcionalidades, o sistema atende às necessidades de controle de jornada de trabalho de forma eficiente e confiável.
-
-
-
-
-
-
-
-
-
-
-
-
-s

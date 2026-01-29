@@ -1,0 +1,56 @@
+Lógica para a implementação da nova forma como e mostrada as justificativas.
+1. Criar tabela dentro do Banco:FEITO
+CREATE TABLE justificativas_padrao (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    descricao VARCHAR(255) NOT NULL,
+    ativa BOOLEAN DEFAULT 1,
+    ordem INT DEFAULT 0,
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+1.2. Modificar tabela Justificativas existente: FEITO
+ALTER TABLE justificativas 
+ADD COLUMN id_justificativa_padrao INT NULL,
+ADD CONSTRAINT fk_just_padrao 
+    FOREIGN KEY (id_justificativa_padrao) 
+    REFERENCES justificativas_padrao(id) 
+    ON DELETE SET NULL;
+	
+1.3. Inserir Justificativas Padrão: FEITO
+INSERT INTO justificativas_padrao (descricao, ordem, ativa) VALUES 
+    ('Atestado médico', 1, 1),
+    ('Consulta médica', 2, 1),
+    ('Compromisso pessoal', 3, 1),
+    ('Problema de transporte', 4, 1),
+    ('Falta de energia/internet', 5, 1),
+    ('Esquecimento', 6, 1),
+    ('Reunião externa', 7, 1);
+---
+ETAPA 2:
+2.1 - Carregar Justificativas no Relatório
+Linha 6 a 16 (relatorio_ponto.php)
+
+2.2 - Modificar a logica de busca das novas justificativas.
+Linha 65 a 72 (relatorio_ponto.php)
+
+ETAPA 3: Modificação visual
+Modificação na forma como é mostrada a justifivativa: linha 561 a 577
+
+ETAPA 4: Modificação no Java Script:
+LINHA 594 a 609 
+
+4.2: Modificação da funç~çao de salvamento:
+Alteração na linha 625 a 651
+
+4.3, Modificação no endpoint
+Alteraçaõ nas linhas 657 a 666
+
+Etapa 5: Modificação no Processamento da Justificativa
+processar_justificativa.php
+
+ETAPA 6. Melhorias na Exibição
+6.1: 
+Diferenciar visualização nos tooltips
+
+

@@ -463,3 +463,57 @@ Stack trace:
 
 [22-Jan-2026 18:40:56 Europe/Berlin] SQL: INSERT INTO usuarios (nome, matricula, email, senha, perfil, carga_horaria)
                 VALUES (:nome, :matricula, :email, :senha, :perfil, :carga)
+[22-Jan-2026 19:00:13 Europe/Berlin] POST RECEBIDO: Array
+(
+    [nome_usuario] => João Silva
+    [email_usuario] => joao@verteron.com
+    [matricula_usuario] => JOAO
+    [senha_usuario] => joao123
+    [perfil_usuario] => 0
+    [carga_horaria] => 8
+)
+
+[22-Jan-2026 19:00:13 Europe/Berlin] SQL: INSERT INTO usuarios (nome, matricula, email, senha, perfil, carga_horaria)
+                VALUES (:nome, :matricula, :email, :senha, :perfil, :carga)
+[23-Jan-2026 15:34:48 America/Sao_Paulo] PHP Warning:  Undefined variable $saldo_total_acumulado in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 578
+[23-Jan-2026 15:34:48 America/Sao_Paulo] PHP Warning:  Undefined variable $saldo_total_acumulado in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 579
+[23-Jan-2026 15:34:48 America/Sao_Paulo] PHP Deprecated:  abs(): Passing null to parameter #1 ($num) of type int|float is deprecated in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 136
+[23-Jan-2026 15:35:07 America/Sao_Paulo] PHP Warning:  Undefined variable $saldo_total_acumulado in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 578
+[23-Jan-2026 15:35:07 America/Sao_Paulo] PHP Warning:  Undefined variable $saldo_total_acumulado in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 579
+[23-Jan-2026 15:35:07 America/Sao_Paulo] PHP Deprecated:  abs(): Passing null to parameter #1 ($num) of type int|float is deprecated in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 136
+[28-Jan-2026 14:38:11 America/Sao_Paulo] PHP Warning:  Undefined variable $saldo_total_acumulado in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 578
+[28-Jan-2026 14:38:11 America/Sao_Paulo] PHP Warning:  Undefined variable $saldo_total_acumulado in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 579
+[28-Jan-2026 14:38:11 America/Sao_Paulo] PHP Deprecated:  abs(): Passing null to parameter #1 ($num) of type int|float is deprecated in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 136
+[28-Jan-2026 14:38:17 America/Sao_Paulo] PHP Warning:  Undefined variable $saldo_total_acumulado in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 578
+[28-Jan-2026 14:38:17 America/Sao_Paulo] PHP Warning:  Undefined variable $saldo_total_acumulado in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 579
+[28-Jan-2026 14:38:17 America/Sao_Paulo] PHP Deprecated:  abs(): Passing null to parameter #1 ($num) of type int|float is deprecated in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 136
+[29-Jan-2026 11:46:10 America/Sao_Paulo] PHP Warning:  Undefined variable $saldo_total_acumulado in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 578
+[29-Jan-2026 11:46:10 America/Sao_Paulo] PHP Warning:  Undefined variable $saldo_total_acumulado in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 579
+[29-Jan-2026 11:46:10 America/Sao_Paulo] PHP Deprecated:  abs(): Passing null to parameter #1 ($num) of type int|float is deprecated in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 136
+[29-Jan-2026 11:59:38 America/Sao_Paulo] PHP Warning:  Undefined variable $saldo_total_acumulado in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 578
+[29-Jan-2026 11:59:38 America/Sao_Paulo] PHP Warning:  Undefined variable $saldo_total_acumulado in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 579
+[29-Jan-2026 11:59:38 America/Sao_Paulo] PHP Deprecated:  abs(): Passing null to parameter #1 ($num) of type int|float is deprecated in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 136
+[29-Jan-2026 11:59:54 America/Sao_Paulo] PHP Warning:  Undefined variable $saldo_total_acumulado in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 578
+[29-Jan-2026 11:59:54 America/Sao_Paulo] PHP Warning:  Undefined variable $saldo_total_acumulado in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 579
+[29-Jan-2026 11:59:54 America/Sao_Paulo] PHP Deprecated:  abs(): Passing null to parameter #1 ($num) of type int|float is deprecated in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 136
+[29-Jan-2026 12:00:47 America/Sao_Paulo] PHP Warning:  Undefined variable $saldo_total_acumulado in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 578
+[29-Jan-2026 12:00:47 America/Sao_Paulo] PHP Warning:  Undefined variable $saldo_total_acumulado in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 579
+[29-Jan-2026 12:00:47 America/Sao_Paulo] PHP Deprecated:  abs(): Passing null to parameter #1 ($num) of type int|float is deprecated in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 136
+[29-Jan-2026 12:01:01 America/Sao_Paulo] PHP Warning:  Undefined variable $saldo_total_acumulado in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 578
+[29-Jan-2026 12:01:01 America/Sao_Paulo] PHP Warning:  Undefined variable $saldo_total_acumulado in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 579
+[29-Jan-2026 12:01:01 America/Sao_Paulo] PHP Deprecated:  abs(): Passing null to parameter #1 ($num) of type int|float is deprecated in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 136
+[29-Jan-2026 12:01:19 America/Sao_Paulo] PHP Warning:  Undefined variable $saldo_total_acumulado in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 578
+[29-Jan-2026 12:01:19 America/Sao_Paulo] PHP Warning:  Undefined variable $saldo_total_acumulado in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 579
+[29-Jan-2026 12:01:19 America/Sao_Paulo] PHP Deprecated:  abs(): Passing null to parameter #1 ($num) of type int|float is deprecated in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 136
+[29-Jan-2026 13:09:12 America/Sao_Paulo] PHP Warning:  Undefined variable $saldo_total_acumulado in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 578
+[29-Jan-2026 13:09:12 America/Sao_Paulo] PHP Warning:  Undefined variable $saldo_total_acumulado in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 579
+[29-Jan-2026 13:09:12 America/Sao_Paulo] PHP Deprecated:  abs(): Passing null to parameter #1 ($num) of type int|float is deprecated in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 136
+[29-Jan-2026 13:10:48 America/Sao_Paulo] PHP Warning:  Undefined variable $saldo_total_acumulado in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 578
+[29-Jan-2026 13:10:48 America/Sao_Paulo] PHP Warning:  Undefined variable $saldo_total_acumulado in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 579
+[29-Jan-2026 13:10:48 America/Sao_Paulo] PHP Deprecated:  abs(): Passing null to parameter #1 ($num) of type int|float is deprecated in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 136
+[29-Jan-2026 13:11:05 America/Sao_Paulo] PHP Warning:  Undefined variable $saldo_total_acumulado in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 578
+[29-Jan-2026 13:11:05 America/Sao_Paulo] PHP Warning:  Undefined variable $saldo_total_acumulado in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 579
+[29-Jan-2026 13:11:05 America/Sao_Paulo] PHP Deprecated:  abs(): Passing null to parameter #1 ($num) of type int|float is deprecated in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 136
+[29-Jan-2026 13:11:05 America/Sao_Paulo] PHP Warning:  Undefined variable $saldo_total_acumulado in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 578
+[29-Jan-2026 13:11:05 America/Sao_Paulo] PHP Warning:  Undefined variable $saldo_total_acumulado in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 579
+[29-Jan-2026 13:11:05 America/Sao_Paulo] PHP Deprecated:  abs(): Passing null to parameter #1 ($num) of type int|float is deprecated in C:\xampp\htdocs\Projeto_Ponto\pages\relatorio_pontos.php on line 136

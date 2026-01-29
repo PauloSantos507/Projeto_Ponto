@@ -108,7 +108,7 @@ if ($usuario_id) {
             $max_batidas = $num_batidas;
         }
     }
-    // Garantir no mínimo 4 colunas (padrão: entrada, saída almoço, volta, saída final)
+    // Garantir no mínimo 4 colunas de batidas
     if ($max_batidas < 4) $max_batidas = 4;
 
     foreach ($dados_relatorio as $dia => &$info) {
@@ -402,6 +402,18 @@ function formatarHoras($segundos)
             border-radius: 6px;
             cursor: pointer;
         }
+
+        tfoot tr {
+            background-color: #e8e8e8;
+            font-weight: bold;
+            font-size: 15px;
+            border-top: 3px solid #868788;
+        }
+
+        tfoot td {
+            padding: 15px 12px;
+        }
+        
     </style>
 </head>
 
@@ -479,13 +491,16 @@ function formatarHoras($segundos)
                         ?>
                         <th>Trabalhadas</th>
                         <th>Saldo</th>
+
                     </tr>
                 </thead>
                 <tbody>
                     <?php
+                    $saldo_total = 0; // Variável que vai acmular o saldo geral
+                    // Loop de repetição que preenche as linhas da tabela
                     foreach ($dados_relatorio as $dia => $info):
                         $saldo = $info['total_segundos'] - ($carga_do_usuario * 3600);
-
+                        $saldo_total += $saldo;
                         // Organiza as batidas em ordem cronológica (já vêm ordenadas do banco)
                         // Cria array com todas as batidas na sequência
                         $batidas_ordenadas = [];
@@ -553,6 +568,19 @@ function formatarHoras($segundos)
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
+                <!--
+                Calculo de Saldo total e nova seção de rodapé
+                                -->
+                <tfoot>
+                    <tr style="background-color: #f0f0f0; font-weight: bold; border-top: 2px solid #868788;">
+                        <td colspan="<?= $max_batidas + 1 ?>">SALDO TOTAL</td>
+                        <td>---</td>
+                        <td class="<?= $saldo_total >= 0 ? 'positivo' : 'negativo' ?>">
+                            <?= formatarHoras($saldo_total) ?>
+                        </td>
+                    </tr>
+                </tfoot>
+
             </table>
         <?php endif; ?>
     </div>
