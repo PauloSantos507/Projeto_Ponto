@@ -413,7 +413,6 @@ function formatarHoras($segundos)
         tfoot td {
             padding: 15px 12px;
         }
-        
     </style>
 </head>
 
@@ -615,9 +614,7 @@ function formatarHoras($segundos)
                 <textarea id="edit_justificativa_personalizada"
                     placeholder="Descreva o motivo da edição..."></textarea>
             </div>
-            <!--
-            Linha para separar a parte das justificativas
-                            -->
+
 
 
             <div class="modal-actions">
@@ -625,6 +622,71 @@ function formatarHoras($segundos)
                 <button onclick="fecharModal()" class="btn-cancel">Cancelar</button>
             </div>
         </div>
+    </div>
+    <!--
+            Linha para separar a parte das justificativas
+                            -->
+
+
+
+    <!-- Modal para adição de uma nova batida 
+                    -->
+    <div id="modalAdicionar" class="modal-overlay">
+        <div class="modal-container">
+            <h3>Adicionar Novo Ponto:</h3>
+            <hr><br>
+
+            <!-- Campo para armazenar o id do usuário -->
+            <input type="hidden" id="add_usuario_id">
+
+            <!-- Campo para a data -->
+            <div class="form-group">
+                <label>Data:</label>
+                <input type="date" id="add_data" style="width: 100%;">
+            </div>
+
+            <!-- Campo para o horário -->
+            <div class="form-group">
+                <label>Novo Horário:</label>
+                <input type="time" id="add_hora" style="width: 100%;">
+            </div>
+
+            <!-- Campo para o tipo de batida -->
+            <div class="form-group">
+                <label>Tipo de Batida:</label>
+                <select id="add_tipo_batida" style="width: 100%;" required>
+                    <option value="">Selecione...</option>
+                    <option value="entrada">🟢 Entrada</option>
+                    <option value="saida">🔴 Saída</option>
+                </select>
+            </div>
+
+        <!-- Adição de Justificativa, será utilizado o mesmo modal que foi utilizado para edição -->
+        <div class="form-group">
+            <label>Justificativa:</label>
+            <select id="add_justificativa" onchange="verificarOutroAdd()" required>
+                <option value="">Selecione uma justificativa...</option>
+                <?php foreach ($justificativas_padrao as $jp): ?>
+                    <option value="<?= $jp['id'] ?>">
+                        <?= htmlspecialchars($jp['descricao']) ?>
+                    </option>
+                <?php endforeach; ?>
+                <option value="outro">📝 Outro motivo (descrever)...</option>
+            </select>
+        </div>
+        <div class="form-group" id="grupo_personalizada_add" style="display: none;">
+            <label>Descreva o motivo:</label>
+            <textarea id="add_justificativa_personalizada"
+                placeholder="Descreva o motivo da edição..."></textarea>
+        </div>
+
+        <!-- Adição de botão para salvar ou cancelar -->
+        <div class="modal-actions">
+            <!-- Deve adicionar uma função para salvar a adição -->
+            <button onclick="SalvarAdicao()" class="btn-save">Salvar Adição</button>
+            <button onclick="fecharModalAdicionar()" class="btn-cancel">Cancelar</button>
+        </div>
+    </div>
     </div>
 
     <script>
