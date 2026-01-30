@@ -234,6 +234,24 @@ function formatarHoras($segundos)
             background: #0056b3;
         }
 
+        .btn-adicionar {
+            background: #ca521f;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-adicionar:hover {
+            background: #ca521f;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -467,7 +485,15 @@ function formatarHoras($segundos)
                         </button>
                     </form>
                 <?php endif; ?>
+
+                <?php if ($is_admin && $usuario_id): ?>
+                    <button onclick="abriModalAdd()" class="btn-adicionar">
+                        ➕ Adicionar Ponto Manual
+                    </button>
+                <?php endif; ?>
+
             </div>
+
             <table>
                 <thead>
                     <tr>
@@ -661,37 +687,201 @@ function formatarHoras($segundos)
                 </select>
             </div>
 
-        <!-- Adição de Justificativa, será utilizado o mesmo modal que foi utilizado para edição -->
-        <div class="form-group">
-            <label>Justificativa:</label>
-            <select id="add_justificativa" onchange="verificarOutroAdd()" required>
-                <option value="">Selecione uma justificativa...</option>
-                <?php foreach ($justificativas_padrao as $jp): ?>
-                    <option value="<?= $jp['id'] ?>">
-                        <?= htmlspecialchars($jp['descricao']) ?>
-                    </option>
-                <?php endforeach; ?>
-                <option value="outro">📝 Outro motivo (descrever)...</option>
-            </select>
-        </div>
-        <div class="form-group" id="grupo_personalizada_add" style="display: none;">
-            <label>Descreva o motivo:</label>
-            <textarea id="add_justificativa_personalizada"
-                placeholder="Descreva o motivo da edição..."></textarea>
-        </div>
+            <!-- Adição de Justificativa, será utilizado o mesmo modal que foi utilizado para edição -->
+            <div class="form-group">
+                <label>Justificativa:</label>
+                <select id="add_justificativa" onchange="verificarOutroAdd()" required>
+                    <option value="">Selecione uma justificativa...</option>
+                    <?php foreach ($justificativas_padrao as $jp): ?>
+                        <option value="<?= $jp['id'] ?>">
+                            <?= htmlspecialchars($jp['descricao']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                    <option value="outro">📝 Outro motivo (descrever)...</option>
+                </select>
+            </div>
+            <div class="form-group" id="grupo_personalizada_add" style="display: none;">
+                <label>Descreva o motivo:</label>
+                <textarea id="add_justificativa_personalizada"
+                    placeholder="Descreva o motivo da edição..."></textarea>
+            </div>
 
-        <!-- Adição de botão para salvar ou cancelar -->
-        <div class="modal-actions">
-            <!-- Deve adicionar uma função para salvar a adição -->
-            <button onclick="SalvarAdicao()" class="btn-save">Salvar Adição</button>
-            <button onclick="fecharModalAdicionar()" class="btn-cancel">Cancelar</button>
+            <!-- Adição de botão para salvar ou cancelar -->
+            <div class="modal-actions">
+                <button onclick="salvarNovoPonto()" class="btn-save">Salvar Novo Ponto</button>
+                <button onclick="fecharModalAdd()" class="btn-cancel">Cancelar</button>
+            </div>
         </div>
-    </div>
     </div>
 
     <script>
         // JS Integrado para garantir funcionamento
         // Adicionar função para mostrar/ocultar textarea personalizada.
+
+        //Função Verificar Outro Adicionar no Modal
+        function verificarOutroAdd() {
+            const select = document.getElementById('add_Justificaiva');
+            const divGrupo = document.getElementById('grupo_personalizado_add');
+            const textarea = document.getElementById('add_justificativa_personalizada');
+
+            const valorSelecionado = selct.value;
+
+            if (valorSelecionado === 'outro') {
+                divGrupo.style.display = 'block';
+                textarea.required = true;
+                textarea.focus();
+            } else {
+                divGrupo.style.display = 'none';
+                textarea.required = false;
+                textarea.value = '';
+            }
+        }
+
+        // Função para Abrir o Modal de edição.
+        function abriModalAdd() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const usuarioId = urlParams.get('usuario_id');
+
+            document.getElementById('add_usuario_id').value = usuarioId;
+
+            const hoje = new Date();
+
+            const dataFormatada = hoje.toISOString().split('T')[0];
+            document.getElementById('add_data').value = dataFormatada;
+
+            document.getElementById('add_hora').value = '';
+            document.getElementById('add_tipo_batida').value = '';
+            document.getElementById('add_justificativa').value = '';
+            document.getElementById('grupo_personalizada_add').style.display = 'none';
+            document.getElementById('add_justificativa_personalizada').value = '';
+
+            document.getElementById('modalAdicionar').style.display = 'block';
+        }
+
+        // Função para fechar o modal de adição
+        function fecharModalAdd() {
+            document.getElementById('modalAdicionar').style.display = 'none';
+
+            document.getElementById('add_usuario_id').value = '';
+            document.getElementById('add_data').value = '';
+            document.getElementById('add_hora').value = '';
+            document.getElementById('add_justificativa').value = '';
+
+            document.getElementById('grupo_personalizada_add').style.display = 'none';
+            document.getElementById('add_justificativa_personalizada').value = '';
+            document.getElementById('add_justificativa_personalizada').required = false;
+        }
+
+        // Funcção que salva o novo ponto adicionado
+        function salvarNovoPonto() {
+            // ========== PARTE A: COLETAR DADOS ==========
+            const usuarioId = document.getElementById('add_usuario_id').value;
+            const data = document.getElementById('add_data').value;
+            const hora = document.getElementById('add_hora').value;
+            const tipo = document.getElementById('add_tipo_batida').value;
+
+            const selectJust = document.getElementById('add_justificativa');
+            const valorJust = selectJust.value;
+            const textareaPersonalizada = document.getElementById('add_justificativa_personalizada');
+
+            // ========== PARTE B: VALIDAÇÕES ==========
+
+            // Validação 1: Usuário selecionado?
+            if (!usuarioId) {
+                alert('Erro: Nenhum usuário selecionado!');
+                return; // Para a função aqui
+            }
+
+            // Validação 2: Data preenchida?
+            if (!data) {
+                alert('Por favor, selecione uma data!');
+                return;
+            }
+
+            // Validação 3: Horário preenchido?
+            if (!hora) {
+                alert('Por favor, selecione um horário!');
+                return;
+            }
+
+            // Validação 4: Tipo de batida selecionado?
+            if (!tipo) {
+                alert('Por favor, selecione o tipo de batida (Entrada ou Saída)!');
+                return;
+            }
+
+            // Validação 5: Justificativa selecionada?
+            if (!valorJust) {
+                alert('Por favor, selecione uma justificativa!');
+                return;
+            }
+
+            // Validação 6: Se for "outro", validar textarea
+            if (valorJust === 'outro') {
+                const textoPersonalizado = textareaPersonalizada.value.trim();
+
+                if (!textoPersonalizado) {
+                    alert('Por favor, descreva o motivo da adição manual!');
+                    return;
+                }
+
+                if (textoPersonalizado.length < 10) {
+                    alert('A justificativa deve ter pelo menos 10 caracteres!');
+                    return;
+                }
+            }
+
+            // ========== PARTE C: PREPARAR DADOS ==========
+            let idJustificativaPadrao = null;
+            let textoPersonalizado = '';
+
+            if (valorJust === 'outro') {
+                // Justificativa personalizada
+                textoPersonalizado = textareaPersonalizada.value.trim();
+            } else {
+                // Justificativa padrão
+                idJustificativaPadrao = valorJust;
+            }
+
+            // ========== PARTE D: CRIAR FORMDATA ==========
+            const formData = new FormData();
+            formData.append('id_usuario', usuarioId);
+            formData.append('data_registro', data);
+            formData.append('hora_registro', hora);
+            formData.append('tipo_batida', tipo);
+
+            // Adicionar justificativa (só uma das duas)
+            if (idJustificativaPadrao) {
+                formData.append('id_justificativa_padrao', idJustificativaPadrao);
+            } else {
+                formData.append('texto_personalizado', textoPersonalizado);
+            }
+
+            // ========== PARTE E: ENVIAR PARA O PHP ==========
+            fetch('../includes/adicionar_ponto_manual.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json()) // Converte resposta em JSON
+                .then(data => {
+                    // "data" aqui é o objeto retornado pelo PHP
+                    // Exemplo: {sucesso: true} ou {sucesso: false, erro: "mensagem"}
+
+                    if (data.sucesso) {
+                        alert('✅ Ponto adicionado com sucesso!');
+                        location.reload(); // Recarrega a página
+                    } else {
+                        alert('❌ Erro: ' + data.erro);
+                    }
+                })
+                .catch(error => {
+                    // Captura erros de rede/comunicação
+                    alert('❌ Erro de comunicação: ' + error.message);
+                });
+        }
+
+
+        // separação
 
         function verificarOutro() {
             const select = document.getElementById('edit_justificativa');
