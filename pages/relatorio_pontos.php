@@ -472,7 +472,7 @@ function formatarHoras($segundos)
                     <input type="hidden" name="data_inicio" value="<?= $data_inicio ?>">
                     <input type="hidden" name="data_fim" value="<?= $data_fim ?>">
                     <button type="submit" name="exportar_tipo" value="usuario" class="btn-export">
-                        📥 Exportar Relatório <?= $is_admin ? 'do Usuário' : 'Meu Relatório' ?>
+                        📥 Exportar <?= $is_admin ? 'do Usuário' : 'Meu Relatório' ?>
                     </button>
                 </form>
 
@@ -858,7 +858,7 @@ function formatarHoras($segundos)
             }
 
             // ========== PARTE E: ENVIAR PARA O PHP ==========
-            fetch('../includes/adicionar_ponto_manual.php', {
+            fetch('../includes/add_pontomanual.php', {
                     method: 'POST',
                     body: formData
                 })
