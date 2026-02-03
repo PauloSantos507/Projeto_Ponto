@@ -222,16 +222,20 @@ function formatarHoras($segundos)
             gap: 8px;
         }
 
-        .btn-export:hover {
-            background: #218838;
+        .select-export {
+            padding: 10px 15px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            min-width: 300px;
+            cursor: pointer;
+            background: white;
         }
 
-        .btn-export-all {
-            background: #007bff;
-        }
-
-        .btn-export-all:hover {
-            background: #0056b3;
+        .select-export:focus {
+            border-color: #ca521f;
+            outline: none;
         }
 
         .btn-adicionar {
@@ -272,6 +276,7 @@ function formatarHoras($segundos)
 
         td.col-entrada {
             background: #ffffff;
+            
         }
 
         /* Colunas de Saída - Tom Laranja/Vermelho */
@@ -280,7 +285,8 @@ function formatarHoras($segundos)
         }
 
         td.col-saida {
-            background: #faecde;
+            background: #fff5eb;
+            
         }
 
         td {
@@ -483,46 +489,39 @@ function formatarHoras($segundos)
         </form>
 
         <?php if ($usuario_id): ?>
-            <!-- Botões de Exportação -->
-            <div class="export-buttons">
-                <form method="POST" action="../includes/exportar_relatorio.php" style="display: inline;">
-                    <input type="hidden" name="usuario_id" value="<?= $usuario_id ?>">
-                    <input type="hidden" name="data_inicio" value="<?= $data_inicio ?>">
-                    <input type="hidden" name="data_fim" value="<?= $data_fim ?>">
-                    <button type="submit" name="exportar_tipo" value="usuario" class="btn-export">
-                        📥 Exportar <?= $is_admin ? 'do Usuário' : 'Meu Relatório' ?>
-                    </button>
-                </form>
 
-                <?php if ($is_admin): ?>
-                    <form method="POST" action="../includes/exportar_relatorio.php" style="display: inline;">
-                        <input type="hidden" name="data_inicio" value="<?= $data_inicio ?>">
-                        <input type="hidden" name="data_fim" value="<?= $data_fim ?>">
-                        <button type="submit" name="exportar_tipo" value="todos" class="btn-export btn-export-all">
-                            📦 Exportar Relatório de TODOS os Usuários
-                        </button>
-                    </form>
-                <?php endif; ?>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h2>Registros</h2>
+                <div class="button_adicionar">
+                    <!-- botão aqui -->
+                    <div class="button_adicionar">
+                        <?php if ($is_admin && $usuario_id): ?>
+                            <button onclick="abriModalAdd()" class="btn-adicionar">
+                                ➕ Adicionar Ponto Manual
+                            </button>
 
-                <?php if ($is_admin && $usuario_id): ?>
-                    <button onclick="abriModalAdd()" class="btn-adicionar">
-                        ➕ Adicionar Ponto Manual
-                    </button>
-                <?php endif; ?>
-
+                        <?php endif; ?>
+                    </div>
+                </div>
             </div>
 
             <table>
                 <thead>
                     <tr>
                         <th>Data</th>
+
+                        <!--
+                        Botao de adição de pontos ficará em cima da tabela
+                    -->
+
+
                         <?php
                         // Gerar cabeçalhos dinâmicos baseado no número de batidas
                         $nomes_padrao = ['Entrada', 'Saída', 'Entrada', 'Saída'];
                         for ($i = 0; $i < $max_batidas; $i++):
                             $eh_entrada = ($i % 2 == 0);
                             $classe_coluna = $eh_entrada ? 'col-entrada' : 'col-saida';
-                            
+
                             if ($i < 4) {
                                 echo '<th class="' . $classe_coluna . '">' . $nomes_padrao[$i] . '</th>';
                             } else {
@@ -561,7 +560,7 @@ function formatarHoras($segundos)
                     ?>
                         <tr>
                             <td><strong><?= date('d/m/Y', strtotime($dia)) ?></strong></td>
-                            <?php for ($i = 0; $i < $max_batidas; $i++): 
+                            <?php for ($i = 0; $i < $max_batidas; $i++):
                                 $eh_entrada = ($i % 2 == 0);
                                 $classe_coluna = $eh_entrada ? 'col-entrada' : 'col-saida';
                             ?>
@@ -631,388 +630,411 @@ function formatarHoras($segundos)
                 </tfoot>
 
             </table>
-        <?php endif; ?>
-    </div>
 
-    <div id="modalEdicao" class="modal-overlay">
-        <div class="modal-container">
-            <h3>Editar Horário</h3>
-            <hr><br>
-            <input type="hidden" id="edit_id">
-            <div class="form-group">
-                <label>Novo Horário:</label>
-                <input type="time" id="edit_hora" style="width: 100%;">
+            <!-- Botões de Exportação -->
+            <div class="export-buttons">
+                <form method="POST" action="../includes/exportar_relatorio.php" style="display: flex; gap: 10px; align-items: center;">
+
+                    <input type="hidden" name="usuario_id" value="<?= $usuario_id ?>">
+                    <input type="hidden" name="data_inicio" value="<?= $data_inicio ?>">
+                    <input type="hidden" name="data_fim" value="<?= $data_fim ?>">
+
+                    <select name="exportar_tipo" class="select_export" required>
+                        <option value="">Selecione o tipo de exportação...</option>
+                        <option value="usuario">📥 Exportar do Usuário Selecionado</option>
+                        <?php if ($is_admin): ?>
+                            <option value="todos">📦 Exportar TODOS os Usuários</option>
+                        <?php endif; ?>
+                    </select>
+
+                    <button type="submit" class="btn-export">
+                        Exportar
+                    </button>
+                </form>
+
+            <?php endif; ?>
             </div>
 
-            <!--
+
+            <div id="modalEdicao" class="modal-overlay">
+                <div class="modal-container">
+                    <h3>Editar Horário</h3>
+                    <hr><br>
+                    <input type="hidden" id="edit_id">
+                    <div class="form-group">
+                        <label>Novo Horário:</label>
+                        <input type="time" id="edit_hora" style="width: 100%;">
+                    </div>
+
+                    <!--
             Novo campo de justificativa para edição. A nova justificattva será salva no banco, poderá ser escolhida através de uma caixa de select fixa
                             -->
-            <div class="form-group">
-                <label>Justificativa:</label>
-                <select id="edit_justificativa" onchange="verificarOutro()" required>
-                    <option value="">Selecione uma justificativa...</option>
-                    <?php foreach ($justificativas_padrao as $jp): ?>
-                        <option value="<?= $jp['id'] ?>">
-                            <?= htmlspecialchars($jp['descricao']) ?>
-                        </option>
-                    <?php endforeach; ?>
-                    <option value="outro">📝 Outro motivo (descrever)...</option>
-                </select>
-            </div>
-            <div class="form-group" id="grupo_personalizada" style="display: none;">
-                <label>Descreva o motivo:</label>
-                <textarea id="edit_justificativa_personalizada"
-                    placeholder="Descreva o motivo da edição..."></textarea>
-            </div>
+                    <div class="form-group">
+                        <label>Justificativa:</label>
+                        <select id="edit_justificativa" onchange="verificarOutro()" required>
+                            <option value="">Selecione uma justificativa...</option>
+                            <?php foreach ($justificativas_padrao as $jp): ?>
+                                <option value="<?= $jp['id'] ?>">
+                                    <?= htmlspecialchars($jp['descricao']) ?>
+                                </option>
+                            <?php endforeach; ?>
+                            <option value="outro">📝 Outro motivo (descrever)...</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="grupo_personalizada" style="display: none;">
+                        <label>Descreva o motivo:</label>
+                        <textarea id="edit_justificativa_personalizada"
+                            placeholder="Descreva o motivo da edição..."></textarea>
+                    </div>
 
 
 
-            <div class="modal-actions">
-                <button onclick="salvarEdicao()" class="btn-save">Salvar Alteração</button>
-                <button onclick="fecharModal()" class="btn-cancel">Cancelar</button>
+                    <div class="modal-actions">
+                        <button onclick="salvarEdicao()" class="btn-save">Salvar Alteração</button>
+                        <button onclick="fecharModal()" class="btn-cancel">Cancelar</button>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <!--
+            <!--
             Linha para separar a parte das justificativas
                             -->
 
 
 
-    <!-- Modal para adição de uma nova batida 
+            <!-- Modal para adição de uma nova batida 
                     -->
-    <div id="modalAdicionar" class="modal-overlay">
-        <div class="modal-container">
-            <h3>Adicionar Novo Ponto:</h3>
-            <hr><br>
+            <div id="modalAdicionar" class="modal-overlay">
+                <div class="modal-container">
+                    <h3>Adicionar Novo Ponto:</h3>
+                    <hr><br>
 
-            <!-- Campo para armazenar o id do usuário -->
-            <input type="hidden" id="add_usuario_id">
+                    <!-- Campo para armazenar o id do usuário -->
+                    <input type="hidden" id="add_usuario_id">
 
-            <!-- Campo para a data -->
-            <div class="form-group">
-                <label>Data:</label>
-                <input type="date" id="add_data" style="width: 100%;">
+                    <!-- Campo para a data -->
+                    <div class="form-group">
+                        <label>Data:</label>
+                        <input type="date" id="add_data" style="width: 100%;">
+                    </div>
+
+                    <!-- Campo para o horário -->
+                    <div class="form-group">
+                        <label>Novo Horário:</label>
+                        <input type="time" id="add_hora" style="width: 100%;">
+                    </div>
+
+                    <!-- Campo para o tipo de batida -->
+                    <div class="form-group">
+                        <label>Tipo de Batida:</label>
+                        <select id="add_tipo_batida" style="width: 100%;" required>
+                            <option value="">Selecione...</option>
+                            <option value="entrada">🟢 Entrada</option>
+                            <option value="saida">🔴 Saída</option>
+                        </select>
+                    </div>
+
+                    <!-- Adição de Justificativa, será utilizado o mesmo modal que foi utilizado para edição -->
+                    <div class="form-group">
+                        <label>Justificativa:</label>
+                        <select id="add_justificativa" onchange="verificarOutroAdd()" required>
+                            <option value="">Selecione uma justificativa...</option>
+                            <?php foreach ($justificativas_padrao as $jp): ?>
+                                <option value="<?= $jp['id'] ?>">
+                                    <?= htmlspecialchars($jp['descricao']) ?>
+                                </option>
+                            <?php endforeach; ?>
+                            <option value="outro">📝 Outro motivo (descrever)...</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="grupo_personalizada_add" style="display: none;">
+                        <label>Descreva o motivo:</label>
+                        <textarea id="add_justificativa_personalizada"
+                            placeholder="Descreva o motivo da edição..."></textarea>
+                    </div>
+
+                    <!-- Adição de botão para salvar ou cancelar -->
+                    <div class="modal-actions">
+                        <button onclick="salvarNovoPonto()" class="btn-save">Salvar Novo Ponto</button>
+                        <button onclick="fecharModalAdd()" class="btn-cancel">Cancelar</button>
+                    </div>
+                </div>
             </div>
 
-            <!-- Campo para o horário -->
-            <div class="form-group">
-                <label>Novo Horário:</label>
-                <input type="time" id="add_hora" style="width: 100%;">
-            </div>
+            <script>
+                // JS Integrado para garantir funcionamento
+                // Adicionar função para mostrar/ocultar textarea personalizada.
 
-            <!-- Campo para o tipo de batida -->
-            <div class="form-group">
-                <label>Tipo de Batida:</label>
-                <select id="add_tipo_batida" style="width: 100%;" required>
-                    <option value="">Selecione...</option>
-                    <option value="entrada">🟢 Entrada</option>
-                    <option value="saida">🔴 Saída</option>
-                </select>
-            </div>
+                //Função Verificar Outro Adicionar no Modal
+                function verificarOutroAdd() {
+                    const select = document.getElementById('add_Justificaiva');
+                    const divGrupo = document.getElementById('grupo_personalizado_add');
+                    const textarea = document.getElementById('add_justificativa_personalizada');
 
-            <!-- Adição de Justificativa, será utilizado o mesmo modal que foi utilizado para edição -->
-            <div class="form-group">
-                <label>Justificativa:</label>
-                <select id="add_justificativa" onchange="verificarOutroAdd()" required>
-                    <option value="">Selecione uma justificativa...</option>
-                    <?php foreach ($justificativas_padrao as $jp): ?>
-                        <option value="<?= $jp['id'] ?>">
-                            <?= htmlspecialchars($jp['descricao']) ?>
-                        </option>
-                    <?php endforeach; ?>
-                    <option value="outro">📝 Outro motivo (descrever)...</option>
-                </select>
-            </div>
-            <div class="form-group" id="grupo_personalizada_add" style="display: none;">
-                <label>Descreva o motivo:</label>
-                <textarea id="add_justificativa_personalizada"
-                    placeholder="Descreva o motivo da edição..."></textarea>
-            </div>
+                    const valorSelecionado = selct.value;
 
-            <!-- Adição de botão para salvar ou cancelar -->
-            <div class="modal-actions">
-                <button onclick="salvarNovoPonto()" class="btn-save">Salvar Novo Ponto</button>
-                <button onclick="fecharModalAdd()" class="btn-cancel">Cancelar</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // JS Integrado para garantir funcionamento
-        // Adicionar função para mostrar/ocultar textarea personalizada.
-
-        //Função Verificar Outro Adicionar no Modal
-        function verificarOutroAdd() {
-            const select = document.getElementById('add_Justificaiva');
-            const divGrupo = document.getElementById('grupo_personalizado_add');
-            const textarea = document.getElementById('add_justificativa_personalizada');
-
-            const valorSelecionado = selct.value;
-
-            if (valorSelecionado === 'outro') {
-                divGrupo.style.display = 'block';
-                textarea.required = true;
-                textarea.focus();
-            } else {
-                divGrupo.style.display = 'none';
-                textarea.required = false;
-                textarea.value = '';
-            }
-        }
-
-        // Função para Abrir o Modal de edição.
-        function abriModalAdd() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const usuarioId = urlParams.get('usuario_id');
-
-            document.getElementById('add_usuario_id').value = usuarioId;
-
-            const hoje = new Date();
-
-            const dataFormatada = hoje.toISOString().split('T')[0];
-            document.getElementById('add_data').value = dataFormatada;
-
-            document.getElementById('add_hora').value = '';
-            document.getElementById('add_tipo_batida').value = '';
-            document.getElementById('add_justificativa').value = '';
-            document.getElementById('grupo_personalizada_add').style.display = 'none';
-            document.getElementById('add_justificativa_personalizada').value = '';
-
-            document.getElementById('modalAdicionar').style.display = 'block';
-        }
-
-        // Função para fechar o modal de adição
-        function fecharModalAdd() {
-            document.getElementById('modalAdicionar').style.display = 'none';
-
-            document.getElementById('add_usuario_id').value = '';
-            document.getElementById('add_data').value = '';
-            document.getElementById('add_hora').value = '';
-            document.getElementById('add_justificativa').value = '';
-
-            document.getElementById('grupo_personalizada_add').style.display = 'none';
-            document.getElementById('add_justificativa_personalizada').value = '';
-            document.getElementById('add_justificativa_personalizada').required = false;
-        }
-
-        // Funcção que salva o novo ponto adicionado
-        function salvarNovoPonto() {
-            // ========== PARTE A: COLETAR DADOS ==========
-            const usuarioId = document.getElementById('add_usuario_id').value;
-            const data = document.getElementById('add_data').value;
-            const hora = document.getElementById('add_hora').value;
-            const tipo = document.getElementById('add_tipo_batida').value;
-
-            const selectJust = document.getElementById('add_justificativa');
-            const valorJust = selectJust.value;
-            const textareaPersonalizada = document.getElementById('add_justificativa_personalizada');
-
-            // ========== PARTE B: VALIDAÇÕES ==========
-
-            // Validação 1: Usuário selecionado?
-            if (!usuarioId) {
-                alert('Erro: Nenhum usuário selecionado!');
-                return; // Para a função aqui
-            }
-
-            // Validação 2: Data preenchida?
-            if (!data) {
-                alert('Por favor, selecione uma data!');
-                return;
-            }
-
-            // Validação 3: Horário preenchido?
-            if (!hora) {
-                alert('Por favor, selecione um horário!');
-                return;
-            }
-
-            // Validação 4: Tipo de batida selecionado?
-            if (!tipo) {
-                alert('Por favor, selecione o tipo de batida (Entrada ou Saída)!');
-                return;
-            }
-
-            // Validação 5: Justificativa selecionada?
-            if (!valorJust) {
-                alert('Por favor, selecione uma justificativa!');
-                return;
-            }
-
-            // Validação 6: Se for "outro", validar textarea
-            if (valorJust === 'outro') {
-                const textoPersonalizado = textareaPersonalizada.value.trim();
-
-                if (!textoPersonalizado) {
-                    alert('Por favor, descreva o motivo da adição manual!');
-                    return;
-                }
-
-                if (textoPersonalizado.length < 10) {
-                    alert('A justificativa deve ter pelo menos 10 caracteres!');
-                    return;
-                }
-            }
-
-            // ========== PARTE C: PREPARAR DADOS ==========
-            let idJustificativaPadrao = null;
-            let textoPersonalizado = '';
-
-            if (valorJust === 'outro') {
-                // Justificativa personalizada
-                textoPersonalizado = textareaPersonalizada.value.trim();
-            } else {
-                // Justificativa padrão
-                idJustificativaPadrao = valorJust;
-            }
-
-            // ========== PARTE D: CRIAR FORMDATA ==========
-            const formData = new FormData();
-            formData.append('id_usuario', usuarioId);
-            formData.append('data_registro', data);
-            formData.append('hora_registro', hora);
-            formData.append('tipo_batida', tipo);
-
-            // Adicionar justificativa (só uma das duas)
-            if (idJustificativaPadrao) {
-                formData.append('id_justificativa_padrao', idJustificativaPadrao);
-            } else {
-                formData.append('texto_personalizado', textoPersonalizado);
-            }
-
-            // ========== PARTE E: ENVIAR PARA O PHP ==========
-            fetch('../includes/add_pontomanual.php', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json()) // Converte resposta em JSON
-                .then(data => {
-                    // "data" aqui é o objeto retornado pelo PHP
-                    // Exemplo: {sucesso: true} ou {sucesso: false, erro: "mensagem"}
-
-                    if (data.sucesso) {
-                        alert('✅ Ponto adicionado com sucesso!');
-                        location.reload(); // Recarrega a página
+                    if (valorSelecionado === 'outro') {
+                        divGrupo.style.display = 'block';
+                        textarea.required = true;
+                        textarea.focus();
                     } else {
-                        alert('❌ Erro: ' + data.erro);
+                        divGrupo.style.display = 'none';
+                        textarea.required = false;
+                        textarea.value = '';
                     }
-                })
-                .catch(error => {
-                    // Captura erros de rede/comunicação
-                    alert('❌ Erro de comunicação: ' + error.message);
-                });
-        }
-
-
-        // separação
-
-        function verificarOutro() {
-            const select = document.getElementById('edit_justificativa');
-            const grupoPersonalizada = document.getElementById('grupo_personalizada');
-            const textarea = document.getElementById('edit_justificativa_personalizada');
-
-            if (select.value === 'outro') {
-                grupoPersonalizada.style.display = 'block';
-                textarea.required = true;
-                textarea.focus();
-            } else {
-                grupoPersonalizada.style.display = 'none';
-                textarea.required = false;
-                textarea.value = '';
-            }
-        }
-
-        function abrirModal(id, hora) {
-            document.getElementById('edit_id').value = id;
-            document.getElementById('edit_hora').value = hora;
-            document.getElementById('modalEdicao').style.display = 'block';
-        }
-
-        function fecharModal() {
-            document.getElementById('modalEdicao').style.display = 'none';
-            document.getElementById('edit_justificativa').value = '';
-        }
-
-        function salvarEdicao() {
-            const id = document.getElementById('edit_id').value;
-            const hora = document.getElementById('edit_hora').value;
-
-            const selectJust = document.getElementById('edit_justificativa');
-            const textareaPersonalizada = document.getElementById('edit_justificativa_personalizada');
-
-            let idJustificativaPadrao = null;
-            let textoPersonalizado = '';
-
-            // Validar seleção
-            if (!selectJust.value) {
-                alert("Por favor, selecione uma justificativa!");
-                return;
-            }
-
-            if (selectJust.value === 'outro') {
-                // Justificativa personalizada
-                textoPersonalizado = textareaPersonalizada.value.trim();
-                if (!textoPersonalizado) {
-                    alert("Por favor, descreva o motivo da alteração!");
-                    return;
                 }
-                if (textoPersonalizado.length < 10) {
-                    alert("A justificativa deve ter pelo menos 10 caracteres!");
-                    return;
+
+                // Função para Abrir o Modal de edição.
+                function abriModalAdd() {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const usuarioId = urlParams.get('usuario_id');
+
+                    document.getElementById('add_usuario_id').value = usuarioId;
+
+                    const hoje = new Date();
+
+                    const dataFormatada = hoje.toISOString().split('T')[0];
+                    document.getElementById('add_data').value = dataFormatada;
+
+                    document.getElementById('add_hora').value = '';
+                    document.getElementById('add_tipo_batida').value = '';
+                    document.getElementById('add_justificativa').value = '';
+                    document.getElementById('grupo_personalizada_add').style.display = 'none';
+                    document.getElementById('add_justificativa_personalizada').value = '';
+
+                    document.getElementById('modalAdicionar').style.display = 'block';
                 }
-            } else {
-                // Justificativa padrão
-                idJustificativaPadrao = selectJust.value;
-            }
 
-            // Criar FormData para enviar ao novo endpoint
-            const formData = new FormData();
-            formData.append('id_ponto', id);
-            if (idJustificativaPadrao) {
-                formData.append('id_justificativa_padrao', idJustificativaPadrao);
-            } else {
-                formData.append('texto_personalizado', textoPersonalizado);
-            }
+                // Função para fechar o modal de adição
+                function fecharModalAdd() {
+                    document.getElementById('modalAdicionar').style.display = 'none';
 
-            // Obter usuario_id da URL para redirecionar corretamente
-            const urlParams = new URLSearchParams(window.location.search);
-            const usuarioId = urlParams.get('usuario_id') || '';
-            formData.append('usuario_id_origem', usuarioId);
+                    document.getElementById('add_usuario_id').value = '';
+                    document.getElementById('add_data').value = '';
+                    document.getElementById('add_hora').value = '';
+                    document.getElementById('add_justificativa').value = '';
 
-            // Primeiro atualiza o horário via processar_edicao.php
-            fetch('../includes/processar_edicao.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        id,
-                        hora,
-                        justificativa: ''
-                    }) // Remove justificativa antiga
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.sucesso) {
-                        // Agora salva a justificativa na nova tabela
-                        return fetch('../includes/processar_justificativa.php', {
+                    document.getElementById('grupo_personalizada_add').style.display = 'none';
+                    document.getElementById('add_justificativa_personalizada').value = '';
+                    document.getElementById('add_justificativa_personalizada').required = false;
+                }
+
+                // Funcção que salva o novo ponto adicionado
+                function salvarNovoPonto() {
+                    // ========== PARTE A: COLETAR DADOS ==========
+                    const usuarioId = document.getElementById('add_usuario_id').value;
+                    const data = document.getElementById('add_data').value;
+                    const hora = document.getElementById('add_hora').value;
+                    const tipo = document.getElementById('add_tipo_batida').value;
+
+                    const selectJust = document.getElementById('add_justificativa');
+                    const valorJust = selectJust.value;
+                    const textareaPersonalizada = document.getElementById('add_justificativa_personalizada');
+
+                    // ========== PARTE B: VALIDAÇÕES ==========
+
+                    // Validação 1: Usuário selecionado?
+                    if (!usuarioId) {
+                        alert('Erro: Nenhum usuário selecionado!');
+                        return; // Para a função aqui
+                    }
+
+                    // Validação 2: Data preenchida?
+                    if (!data) {
+                        alert('Por favor, selecione uma data!');
+                        return;
+                    }
+
+                    // Validação 3: Horário preenchido?
+                    if (!hora) {
+                        alert('Por favor, selecione um horário!');
+                        return;
+                    }
+
+                    // Validação 4: Tipo de batida selecionado?
+                    if (!tipo) {
+                        alert('Por favor, selecione o tipo de batida (Entrada ou Saída)!');
+                        return;
+                    }
+
+                    // Validação 5: Justificativa selecionada?
+                    if (!valorJust) {
+                        alert('Por favor, selecione uma justificativa!');
+                        return;
+                    }
+
+                    // Validação 6: Se for "outro", validar textarea
+                    if (valorJust === 'outro') {
+                        const textoPersonalizado = textareaPersonalizada.value.trim();
+
+                        if (!textoPersonalizado) {
+                            alert('Por favor, descreva o motivo da adição manual!');
+                            return;
+                        }
+
+                        if (textoPersonalizado.length < 10) {
+                            alert('A justificativa deve ter pelo menos 10 caracteres!');
+                            return;
+                        }
+                    }
+
+                    // ========== PARTE C: PREPARAR DADOS ==========
+                    let idJustificativaPadrao = null;
+                    let textoPersonalizado = '';
+
+                    if (valorJust === 'outro') {
+                        // Justificativa personalizada
+                        textoPersonalizado = textareaPersonalizada.value.trim();
+                    } else {
+                        // Justificativa padrão
+                        idJustificativaPadrao = valorJust;
+                    }
+
+                    // ========== PARTE D: CRIAR FORMDATA ==========
+                    const formData = new FormData();
+                    formData.append('id_usuario', usuarioId);
+                    formData.append('data_registro', data);
+                    formData.append('hora_registro', hora);
+                    formData.append('tipo_batida', tipo);
+
+                    // Adicionar justificativa (só uma das duas)
+                    if (idJustificativaPadrao) {
+                        formData.append('id_justificativa_padrao', idJustificativaPadrao);
+                    } else {
+                        formData.append('texto_personalizado', textoPersonalizado);
+                    }
+
+                    // ========== PARTE E: ENVIAR PARA O PHP ==========
+                    fetch('../includes/add_pontomanual.php', {
                             method: 'POST',
                             body: formData
+                        })
+                        .then(response => response.json()) // Converte resposta em JSON
+                        .then(data => {
+                            // "data" aqui é o objeto retornado pelo PHP
+                            // Exemplo: {sucesso: true} ou {sucesso: false, erro: "mensagem"}
+
+                            if (data.sucesso) {
+                                alert('✅ Ponto adicionado com sucesso!');
+                                location.reload(); // Recarrega a página
+                            } else {
+                                alert('❌ Erro: ' + data.erro);
+                            }
+                        })
+                        .catch(error => {
+                            // Captura erros de rede/comunicação
+                            alert('❌ Erro de comunicação: ' + error.message);
                         });
+                }
+
+
+                // separação
+
+                function verificarOutro() {
+                    const select = document.getElementById('edit_justificativa');
+                    const grupoPersonalizada = document.getElementById('grupo_personalizada');
+                    const textarea = document.getElementById('edit_justificativa_personalizada');
+
+                    if (select.value === 'outro') {
+                        grupoPersonalizada.style.display = 'block';
+                        textarea.required = true;
+                        textarea.focus();
                     } else {
-                        throw new Error(data.erro || 'Erro ao atualizar horário');
+                        grupoPersonalizada.style.display = 'none';
+                        textarea.required = false;
+                        textarea.value = '';
                     }
-                })
-                .then(response => {
-                    // Recarrega a página após salvar a justificativa
-                    location.reload();
-                })
-                .catch(err => {
-                    alert("Erro ao salvar: " + err.message);
-                });
-        }
-    </script>
+                }
+
+                function abrirModal(id, hora) {
+                    document.getElementById('edit_id').value = id;
+                    document.getElementById('edit_hora').value = hora;
+                    document.getElementById('modalEdicao').style.display = 'block';
+                }
+
+                function fecharModal() {
+                    document.getElementById('modalEdicao').style.display = 'none';
+                    document.getElementById('edit_justificativa').value = '';
+                }
+
+                function salvarEdicao() {
+                    const id = document.getElementById('edit_id').value;
+                    const hora = document.getElementById('edit_hora').value;
+
+                    const selectJust = document.getElementById('edit_justificativa');
+                    const textareaPersonalizada = document.getElementById('edit_justificativa_personalizada');
+
+                    let idJustificativaPadrao = null;
+                    let textoPersonalizado = '';
+
+                    // Validar seleção
+                    if (!selectJust.value) {
+                        alert("Por favor, selecione uma justificativa!");
+                        return;
+                    }
+
+                    if (selectJust.value === 'outro') {
+                        // Justificativa personalizada
+                        textoPersonalizado = textareaPersonalizada.value.trim();
+                        if (!textoPersonalizado) {
+                            alert("Por favor, descreva o motivo da alteração!");
+                            return;
+                        }
+                        if (textoPersonalizado.length < 10) {
+                            alert("A justificativa deve ter pelo menos 10 caracteres!");
+                            return;
+                        }
+                    } else {
+                        // Justificativa padrão
+                        idJustificativaPadrao = selectJust.value;
+                    }
+
+                    // Criar FormData para enviar ao novo endpoint
+                    const formData = new FormData();
+                    formData.append('id_ponto', id);
+                    if (idJustificativaPadrao) {
+                        formData.append('id_justificativa_padrao', idJustificativaPadrao);
+                    } else {
+                        formData.append('texto_personalizado', textoPersonalizado);
+                    }
+
+                    // Obter usuario_id da URL para redirecionar corretamente
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const usuarioId = urlParams.get('usuario_id') || '';
+                    formData.append('usuario_id_origem', usuarioId);
+
+                    // Primeiro atualiza o horário via processar_edicao.php
+                    fetch('../includes/processar_edicao.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                id,
+                                hora,
+                                justificativa: ''
+                            }) // Remove justificativa antiga
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.sucesso) {
+                                // Agora salva a justificativa na nova tabela
+                                return fetch('../includes/processar_justificativa.php', {
+                                    method: 'POST',
+                                    body: formData
+                                });
+                            } else {
+                                throw new Error(data.erro || 'Erro ao atualizar horário');
+                            }
+                        })
+                        .then(response => {
+                            // Recarrega a página após salvar a justificativa
+                            location.reload();
+                        })
+                        .catch(err => {
+                            alert("Erro ao salvar: " + err.message);
+                        });
+                }
+            </script>
 </body>
 
 </html>
