@@ -265,6 +265,24 @@ function formatarHoras($segundos)
             font-size: 14px;
         }
 
+        /* Colunas de Entrada - Tom Verde/Azul */
+        th.col-entrada {
+            background: #868788;
+        }
+
+        td.col-entrada {
+            background: #ffffff;
+        }
+
+        /* Colunas de Saída - Tom Laranja/Vermelho */
+        th.col-saida {
+            background: #d68a3d;
+        }
+
+        td.col-saida {
+            background: #faecde;
+        }
+
         td {
             border-bottom: 1px solid #eee;
             padding: 12px;
@@ -502,15 +520,18 @@ function formatarHoras($segundos)
                         // Gerar cabeçalhos dinâmicos baseado no número de batidas
                         $nomes_padrao = ['Entrada', 'Saída', 'Entrada', 'Saída'];
                         for ($i = 0; $i < $max_batidas; $i++):
+                            $eh_entrada = ($i % 2 == 0);
+                            $classe_coluna = $eh_entrada ? 'col-entrada' : 'col-saida';
+                            
                             if ($i < 4) {
-                                echo '<th>' . $nomes_padrao[$i] . '</th>';
+                                echo '<th class="' . $classe_coluna . '">' . $nomes_padrao[$i] . '</th>';
                             } else {
                                 // Após a 4ª, alterna entre Entrada/Saída
                                 //$numero = floor($i / 2) + 1;
                                 //$numero = floor($i / 2) + 1;
                                 // Caso queira numerar as batidas extras, descomente a linha acima e adicione o variavel $numero abaixo
-                                $tipo = ($i % 2 == 0) ? 'Entrada ' : 'Saída ';
-                                echo '<th>' . $tipo . '</th>';
+                                $tipo = $eh_entrada ? 'Entrada ' : 'Saída ';
+                                echo '<th class="' . $classe_coluna . '">' . $tipo . '</th>';
                             }
                         endfor;
                         ?>
@@ -540,8 +561,11 @@ function formatarHoras($segundos)
                     ?>
                         <tr>
                             <td><strong><?= date('d/m/Y', strtotime($dia)) ?></strong></td>
-                            <?php for ($i = 0; $i < $max_batidas; $i++): ?>
-                                <td>
+                            <?php for ($i = 0; $i < $max_batidas; $i++): 
+                                $eh_entrada = ($i % 2 == 0);
+                                $classe_coluna = $eh_entrada ? 'col-entrada' : 'col-saida';
+                            ?>
+                                <td class="<?= $classe_coluna ?>">
                                     <?php if ($batidas_ordenadas[$i] !== null):
                                         $bt = $batidas_ordenadas[$i];
                                         $hora_exibida = substr($bt['hora'], 0, 5);
